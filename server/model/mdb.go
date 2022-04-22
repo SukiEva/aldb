@@ -1,10 +1,9 @@
-package mdb
+package model
 
 import (
 	"context"
-	"fmt"
 	"github.com/SukiEva/aldb/server/config"
-	"github.com/SukiEva/aldb/server/log"
+	"github.com/SukiEva/aldb/server/utils/log"
 	"github.com/qiniu/qmgo"
 )
 
@@ -14,8 +13,11 @@ var (
 	ctx context.Context
 	cfg = config.GetEnv()
 
-	algae *qmgo.Collection
-	river *qmgo.Collection
+	algae      *qmgo.Collection
+	river      *qmgo.Collection
+	operator   *qmgo.Collection
+	operation  *qmgo.Collection
+	annotation *qmgo.Collection
 )
 
 func init() {
@@ -28,16 +30,15 @@ func init() {
 	mdb = cli.Database(cfg.Mongo.DB)
 	algae = mdb.Collection("algae")
 	river = mdb.Collection("river")
+	operator = mdb.Collection("operator")
+	operation = mdb.Collection("operation")
+	annotation = mdb.Collection("annotation")
 }
+
+type Mgo struct{}
 
 func Close() {
 	if err := cli.Close(ctx); err != nil {
 		log.Logger.Info(err)
 	}
-}
-
-func (obj *Algae) Insert() error {
-	res, err := algae.InsertOne(ctx, obj)
-	fmt.Println(res)
-	return err
 }
