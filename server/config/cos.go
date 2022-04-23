@@ -3,8 +3,8 @@ package config
 type TencentCOS struct {
 	Bucket     string `json:"bucket"`
 	Region     string `json:"region"`
-	SecretID   string `json:"secret-id"`
-	SecretKey  string `json:"secret-key"`
-	BaseURL    string `json:"base-url"`
-	PathPrefix string `json:"path-prefix"`
+	SecretID   string `json:"secretID"`
+	SecretKey  string `json:"secretKey"`
+	BaseURL    string `json:"baseURL"`
+	PathPrefix string `json:"pathPrefix"`
 }

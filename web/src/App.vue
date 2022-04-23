@@ -1,5 +1,4 @@
 <template>
-    <Header />
     <router-view />
     <!-- <div style="display: flex">
         <div>

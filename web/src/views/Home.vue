@@ -1,11 +1,22 @@
 <template>
+    <Header />
     <el-main>
         <div class="flex-auto overflow-y-auto">
-            <Waterfall :list="list" :row-key="options.rowKey" :gutter="options.gutter"
-                :has-around-gutter="options.hasAroundGutter" :width="options.width" :breakpoints="options.breakpoints"
-                :img-selector="options.imgSelector" :background-color="options.backgroundColor"
-                :animation-effect="options.animationEffect" :animation-duration="options.animationDuration"
-                :animation-delay="options.animationDelay" :lazyload="options.lazyload" :load-props="options.loadProps">
+            <Waterfall
+                :list="list"
+                :row-key="options.rowKey"
+                :gutter="options.gutter"
+                :has-around-gutter="options.hasAroundGutter"
+                :width="options.width"
+                :breakpoints="options.breakpoints"
+                :img-selector="options.imgSelector"
+                :background-color="options.backgroundColor"
+                :animation-effect="options.animationEffect"
+                :animation-duration="options.animationDuration"
+                :animation-delay="options.animationDelay"
+                :lazyload="options.lazyload"
+                :load-props="options.loadProps"
+            >
                 <template #item="{ item, url, index }">
                     <div class="card">
                         <LazyImg :url="url" />
@@ -19,17 +30,17 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted, reactive, ref } from 'vue'
-import { LazyImg, Waterfall } from 'vue-waterfall-plugin-next'
-import 'vue-waterfall-plugin-next/style.css'
-import loading from '../assets/loading.png'
-import error from '../assets/error.png'
-import axios from 'axios'
+import { onMounted, reactive, ref } from "vue";
+import { LazyImg, Waterfall } from "vue-waterfall-plugin-next";
+import "vue-waterfall-plugin-next/style.css";
+import loading from "../assets/loading.png";
+import error from "../assets/error.png";
+import axios from "axios";
 
 function useWaterfall() {
     const options = reactive({
         // 唯一key值
-        rowKey: 'id',
+        rowKey: "id",
         // 卡片之间的间隙
         gutter: 10,
         // 是否有周围的gutter
@@ -52,15 +63,15 @@ function useWaterfall() {
             },
         },
         // 动画效果
-        animationEffect: 'animate__fadeInUp',
+        animationEffect: "animate__fadeInUp",
         // 动画时间
         animationDuration: 1000,
         // 动画延迟
         animationDelay: 300,
         // 背景色
-        backgroundColor: '#ffffff',
+        backgroundColor: "#ffffff",
         // imgSelector
-        imgSelector: 'src',
+        imgSelector: "src",
         // 加载配置
         loadProps: {
             loading,
@@ -68,7 +79,7 @@ function useWaterfall() {
         },
         // 是否懒加载
         lazyload: true,
-    })
+    });
     // onMounted(() => {
     //     handleLoadMore()
     // })
@@ -78,21 +89,19 @@ function useWaterfall() {
     // }
     return {
         //list,
-        options
+        options,
         //handleLoadMore,
-    }
+    };
 }
 
-const options = useWaterfall()
-const list = ()=>{
-    fetch('http://localhost:8080/api/data')
-    .then( res=>res.json())
-    .catch(
-        (error) => {
-        console.log('Looks like there was a problem: \n', error);
+const options = useWaterfall();
+const list = () => {
+    fetch("http://localhost:8080/api/data")
+        .then((res) => res.json())
+        .catch((error) => {
+            console.log("Looks like there was a problem: \n", error);
         });
-}
+};
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

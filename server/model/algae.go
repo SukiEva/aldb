@@ -10,8 +10,8 @@ type Alga struct {
 	field.DefaultField `bson:",inline"`
 	Name               string `json:"name" bson:"name"`
 	Position           `json:"position" bson:"position"`
-	Src                string `json:"src" bson:"src"`
-	River              `json:"river" bson:"river"`
+	Src                string               `json:"src" bson:"src"`
+	River              primitive.ObjectID   `json:"river" bson:"river"`
 	Annotations        []primitive.ObjectID `json:"annotations" bson:"annotations"`
 }
 

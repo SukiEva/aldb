@@ -1,7 +1,7 @@
 package router
 
 import (
-	"github.com/SukiEva/aldb/server/api"
+	"github.com/SukiEva/aldb/server/api/v1"
 	"github.com/gin-gonic/gin"
 )
 
@@ -14,8 +14,8 @@ type Group struct {
 }
 
 func init() {
-	algaeRouter := Router.Group("api")
+	algaeRouter := Router.Group("api/v1")
 	{
-		algaeRouter.GET("/data", api.GetData)
+		algaeRouter.GET("/data", v1.GetData)
 	}
 }
