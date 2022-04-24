@@ -2,7 +2,7 @@ package config
 
 import "os"
 
-func GetEnv() *Server {
+func GetEnv() *Config {
 	uri := os.Getenv("MONGO_URI")
 	if uri == "" {
 		uri = "mongodb://localhost:27017"
@@ -17,7 +17,7 @@ func GetEnv() *Server {
 	secretKey := os.Getenv("COS_SECRET_KEY")
 	baseUrl := os.Getenv("COS_BASE_URL")
 	pathPrefix := os.Getenv("COS_PATH_PREFIX")
-	return &Server{
+	return &Config{
 		Mongo:      Mongo{uri, db},
 		TencentCOS: TencentCOS{bucket, region, secretID, secretKey, baseUrl, pathPrefix},
 	}
