@@ -6,6 +6,7 @@ import (
 )
 
 type Config struct {
+	Port       int `json:"port"`
 	Mongo      `json:"mongo"`
 	TencentCOS `json:"cos"`
 	LogConfig  `json:"log"`
@@ -37,10 +38,16 @@ type LogConfig struct {
 var Conf = new(Config)
 
 // InitConfig 初始化配置；从指定文件加载配置文件
-func InitConfig(filePath string) error {
-	b, err := ioutil.ReadFile(filePath)
+func InitConfig() error {
+	b, err := ioutil.ReadFile("server/config/config.json")
 	if err != nil {
 		return err
 	}
 	return json.Unmarshal(b, Conf)
+}
+
+func init() {
+	if err := InitConfig(); err != nil {
+		panic(err)
+	}
 }

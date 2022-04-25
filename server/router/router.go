@@ -10,12 +10,18 @@ func InitRouter() *gin.Engine {
 	r := gin.New()
 	r.Use(middleware.ZapLogger(), middleware.ZapRecovery(true))
 	// Auth
-	r.GET("/auth", v1.GetAuth)
-	// Api Group
-	api := r.Group("/api/v1")
+	r.GET("captcha", v1.GetCaptcha)
+	r.POST("auth", v1.GetAuth)
+	// api
+	api := r.Group("api")
 	api.Use(middleware.JWTAuthMiddleware())
 	{
-		api.GET("/data", v1.GetData)
+		api.GET("data", v1.GetData)
+	}
+	// api/user
+	user := api.Group("user")
+	{
+		user.POST("add", v1.AddUser)
 	}
 	return r
 }

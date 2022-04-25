@@ -12,7 +12,7 @@ import (
 	"time"
 )
 
-var cfg = config.GetEnv().TencentCOS
+var cfg = config.Conf.TencentCOS
 
 // NewClient init COS client
 func NewClient() *cos.Client {

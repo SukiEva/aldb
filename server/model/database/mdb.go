@@ -2,8 +2,8 @@ package database
 
 import (
 	"context"
+	"fmt"
 	"github.com/SukiEva/aldb/server/config"
-	"github.com/SukiEva/aldb/server/util/log"
 	"github.com/qiniu/qmgo"
 )
 
@@ -11,7 +11,7 @@ var (
 	cli *qmgo.Client
 	mdb *qmgo.Database
 	ctx context.Context
-	cfg = config.GetEnv()
+	cfg = config.Conf.Mongo
 
 	algae      *qmgo.Collection
 	river      *qmgo.Collection
@@ -23,11 +23,11 @@ var (
 func init() {
 	var err error
 	ctx = context.Background()
-	cli, err = qmgo.NewClient(ctx, &qmgo.Config{Uri: cfg.Mongo.Uri})
+	cli, err = qmgo.NewClient(ctx, &qmgo.Config{Uri: cfg.Uri})
 	if err != nil {
 		panic("Fail to connect mongodb")
 	}
-	mdb = cli.Database(cfg.Mongo.DB)
+	mdb = cli.Database(cfg.DB)
 	algae = mdb.Collection("algae")
 	river = mdb.Collection("river")
 	operator = mdb.Collection("operator")
@@ -39,6 +39,6 @@ type Mgo struct{}
 
 func Close() {
 	if err := cli.Close(ctx); err != nil {
-		log.Logger.Info(err)
+		fmt.Println(err)
 	}
 }
