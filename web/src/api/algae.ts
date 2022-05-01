@@ -1,9 +1,9 @@
 import http from "~/utils/request";
 
-export const getArticleList = (data:object) =>{
+export const getData = (data: object) => {
     return http.request({
-        url: '/app/blog/article/page',
-        method: 'POST',
-        data
-    })
-}
+        url: "/api/data",
+        method: "get",
+        data,
+    });
+};

@@ -9,12 +9,13 @@ import (
 func InitRouter() *gin.Engine {
 	r := gin.New()
 	r.Use(middleware.ZapLogger(), middleware.ZapRecovery(true))
+	r.Use(middleware.Cors())
 	// Auth
 	r.GET("captcha", v1.GetCaptcha)
 	r.POST("auth", v1.GetAuth)
 	// api
 	api := r.Group("api")
-	api.Use(middleware.JWTAuthMiddleware())
+	//api.Use(middleware.JWTAuthMiddleware())
 	{
 		api.GET("data", v1.GetData)
 	}

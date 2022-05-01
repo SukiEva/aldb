@@ -30,12 +30,11 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted, reactive, ref } from "vue";
 import { LazyImg, Waterfall } from "vue-waterfall-plugin-next";
 import "vue-waterfall-plugin-next/style.css";
-import loading from "../assets/loading.png";
-import error from "../assets/error.png";
-import axios from "axios";
+import loading from "~/assets/loading.png";
+import error from "~/assets/error.png";
+import { getData } from "~/api/algae";
 
 function useWaterfall() {
     const options = reactive({
@@ -95,13 +94,13 @@ function useWaterfall() {
 }
 
 const options = useWaterfall();
-const list = () => {
-    fetch("http://localhost:8080/api/data")
-        .then((res) => res.json())
-        .catch((error) => {
-            console.log("Looks like there was a problem: \n", error);
-        });
-};
+const list = reactive();
+onMounted(() => {
+    getData(list).then((res) => {
+        console.log(res);
+    });
+});
+console.log(list);
 </script>
 
 <style scoped></style>

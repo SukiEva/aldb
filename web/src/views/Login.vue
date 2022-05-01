@@ -19,9 +19,7 @@
                         >
                             <template #suffix>
                                 <span class="input-icon">
-                                    <el-icon>
-                                        <user />
-                                    </el-icon>
+                                    <i-ep-user />
                                 </span>
                             </template>
                         </el-input>
@@ -34,12 +32,7 @@
                         >
                             <template #suffix>
                                 <span class="input-icon">
-                                    <el-icon>
-                                        <component
-                                            :is="lock"
-                                            @click="changeLock"
-                                        />
-                                    </el-icon>
+                                    <i-ep-lock />
                                 </span>
                             </template>
                         </el-input>
@@ -90,14 +83,24 @@
 </template>
 
 <script setup>
-import { reactive, ref } from "vue";
+import { getCaptcha } from "~/api/auth";
 
 const loginFormData = reactive({
     username: "admin",
     password: "123456",
-    captcha: "123",
+    captcha: "",
     captchaId: "",
 });
+
+const picPath = ref("");
+// 获取验证码
+const loginVerify = () => {
+    getCaptcha({}).then((ele) => {
+        picPath.value = ele.data.captchaValue;
+        loginFormData.captchaId = ele.data.captchaId;
+    });
+};
+loginVerify();
 </script>
 
 <style lang="scss" scoped>
