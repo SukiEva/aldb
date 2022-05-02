@@ -71,7 +71,9 @@ class AxiosHttpRequest implements BaseType {
                 });
                 // 添加全局的loading..
                 // 请求头携带token
-                // config.headers['Authorization'] = 'Bearer ' + 'token666'
+                if (localStorage.getItem("Authorization"))
+                    config.headers["Authorization"] =
+                        localStorage.getItem("Authorization");
                 config.headers["Content-Type"] =
                     "application/json;charset=utf-8";
                 // get请求映射params参数
@@ -120,22 +122,6 @@ class AxiosHttpRequest implements BaseType {
                 if (code === 200) {
                     return Promise.resolve(res.data);
                 } else {
-                    switch (code) {
-                        case "401":
-                            msg = "认证失败，无法访问系统资源";
-                            break;
-                        case "403":
-                            msg = "当前操作没有权限";
-                            break;
-                        case "404":
-                            msg = "访问资源不存在";
-                            break;
-                        case "default":
-                            msg = "系统未知错误，请反馈给管理员";
-                            break;
-                        default:
-                            return "未知错误，请联系管理员";
-                    }
                     ElMessage.error(msg);
                     return Promise.reject(res.data);
                 }

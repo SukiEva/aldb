@@ -28,7 +28,7 @@ func (m *Mgo) CheckOperator(email, password string) (Operator, error) {
 	return one, err
 }
 
-func (m *Mgo) InsertOperator(obj Operator) error {
+func (m *Mgo) InsertOperator(obj *Operator) error {
 	_, err := operator.InsertOne(ctx, obj)
 	return err
 }
@@ -41,7 +41,7 @@ func (m *Mgo) ExistsOperator(email string) bool {
 	return true
 }
 
-func (m *Mgo) UpsertOperator(obj Operator) error {
+func (m *Mgo) UpsertOperator(obj *Operator) error {
 	_, err := operator.Upsert(ctx, bson.M{"_id": obj.Id}, obj)
 	return err
 }

@@ -27,12 +27,12 @@ func (m *Mgo) QueryAlga(name string) (Alga, error) {
 	return one, err
 }
 
-func (m *Mgo) InsertAlga(obj Alga) error {
+func (m *Mgo) InsertAlga(obj *Alga) error {
 	_, err := algae.InsertOne(ctx, obj)
 	return err
 }
 
-func (m *Mgo) UpsertAlga(obj Alga) error {
+func (m *Mgo) UpsertAlga(obj *Alga) error {
 	_, err := algae.Upsert(ctx, bson.M{"_id": obj.Id}, obj)
 	return err
 }

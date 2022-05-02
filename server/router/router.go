@@ -13,16 +13,17 @@ func InitRouter() *gin.Engine {
 	// Auth
 	r.GET("captcha", v1.GetCaptcha)
 	r.POST("auth", v1.GetAuth)
+	r.POST("register", v1.AddUser)
 	// api
 	api := r.Group("api")
-	//api.Use(middleware.JWTAuthMiddleware())
+	api.Use(middleware.JWTAuthMiddleware())
 	{
 		api.GET("data", v1.GetData)
 	}
 	// api/user
-	user := api.Group("user")
-	{
-		user.POST("add", v1.AddUser)
-	}
+	//user := api.Group("user")
+	//{
+	//	user.POST("add", v1.AddUser)
+	//}
 	return r
 }

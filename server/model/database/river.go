@@ -33,7 +33,7 @@ func (m *Mgo) QueryRiver(obj primitive.ObjectID) River {
 	return one
 }
 
-func (m *Mgo) UpsertRiver(r River) error {
+func (m *Mgo) UpsertRiver(r *River) error {
 	_, err := river.Upsert(ctx, bson.M{"name": r.Name}, r)
 	return err
 }

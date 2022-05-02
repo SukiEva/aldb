@@ -1,9 +1,9 @@
 import http from "~/utils/request";
 
-export const getCaptcha = (data: object) => {
+export const registerUser = (data: object) => {
     return http.request({
-        url: "/captcha",
-        method: "get",
+        url: "/register",
+        method: "post",
         data,
     });
 };

@@ -7,3 +7,11 @@ export const getCaptcha = (data: object) => {
         data,
     });
 };
+
+export const loginSubmit = (data: object) => {
+    return http.request({
+        url: "/auth",
+        method: "post",
+        data,
+    });
+};

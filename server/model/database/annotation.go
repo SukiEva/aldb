@@ -21,12 +21,12 @@ func (m *Mgo) QueryAnnotation(obj primitive.ObjectID) Annotation {
 	return one
 }
 
-func (m *Mgo) UpsertAnnotation(obj Annotation) error {
+func (m *Mgo) UpsertAnnotation(obj *Annotation) error {
 	_, err := annotation.Upsert(ctx, bson.M{"_id": obj.Id}, obj)
 	return err
 }
 
-func (m *Mgo) InsertAnnotation(obj Annotation) error {
+func (m *Mgo) InsertAnnotation(obj *Annotation) error {
 	_, err := annotation.InsertOne(ctx, obj)
 	return err
 }
