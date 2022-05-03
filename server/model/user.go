@@ -16,8 +16,5 @@ func AddUser(obj Operator) error {
 		Access:     obj.Access,
 		Operations: nil,
 	})
-	if err != nil {
-		return err
-	}
-	return nil
+	return err
 }

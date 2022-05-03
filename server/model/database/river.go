@@ -6,16 +6,10 @@ import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
-type Position struct {
-	Longitude int `json:"longitude" bson:"longitude"`
-	Latitude  int `json:"latitude" bson:"latitude"`
-}
-
 type River struct {
 	field.DefaultField `bson:",inline"`
-	Name               string `json:"name" bson:"name"`
-	Address            string `json:"address" bson:"address"`
-	Position           `json:"position" bson:"position"`
+	Name               string               `json:"name" bson:"name"`
+	Address            string               `json:"address" bson:"address"`
 	Algae              []primitive.ObjectID `json:"algae" bson:"algae"`
 }
 
@@ -33,8 +27,16 @@ func (m *Mgo) QueryRiver(obj primitive.ObjectID) River {
 	return one
 }
 
-func (m *Mgo) UpsertRiver(r *River) error {
-	_, err := river.Upsert(ctx, bson.M{"name": r.Name}, r)
+func (m *Mgo) ExistsRiver(name string) bool {
+	var one River
+	if err := river.Find(ctx, bson.M{"name": name}).One(&one); err != nil {
+		return false
+	}
+	return true
+}
+
+func (m *Mgo) InsertRiver(r *River) error {
+	_, err := river.InsertOne(ctx, r)
 	return err
 }
 

@@ -8,8 +8,12 @@
             size="large"
             clearable
         /> -->
+
         <div class="header-right">
             <div class="header-user-con">
+                <el-button round @click="dialogFormVisible = true">
+                    添加 <i-ep-upload />
+                </el-button>
                 <el-dropdown
                     class="user-name"
                     trigger="click"
@@ -35,11 +39,121 @@
             </div>
         </div>
     </el-header>
+
+    <el-dialog v-model="dialogFormVisible" title="藻类图像上传" width="30%">
+        <el-form :model="form">
+            <el-form-item label="名称">
+                <el-input v-model="form.name" />
+            </el-form-item>
+            <el-form-item label="所属河流">
+                <el-space
+                    ><el-select v-model="form.river" placeholder="选择河流">
+                        <el-option label="Zone one" value="shanghai" />
+                        <el-option label="Zone two" value="beijing" />
+                    </el-select>
+                    <el-button
+                        type="primary"
+                        size="small"
+                        @click="riverFormVisible = true"
+                        >添加</el-button
+                    ></el-space
+                >
+            </el-form-item>
+            <el-form-item label="图像">
+                <el-upload drag action="" :limit="1">
+                    <el-icon class="el-icon--upload"
+                        ><i-ep-upload-filled
+                    /></el-icon>
+                    <div class="el-upload__text">
+                        Drop file here or <em>click to upload</em>
+                    </div>
+                    <template #tip>
+                        <div class="el-upload__tip">jpg or png files</div>
+                    </template>
+                </el-upload>
+            </el-form-item>
+        </el-form>
+        <template #footer>
+            <span class="dialog-footer">
+                <el-button @click="dialogFormVisible = false">Cancel</el-button>
+                <el-button type="primary" @click="dialogFormVisible = false"
+                    >Confirm</el-button
+                >
+            </span>
+        </template>
+    </el-dialog>
+    <el-dialog v-model="riverFormVisible" title="添加河流" width="30%" center>
+        <el-form :model="river">
+            <el-form-item label="名称">
+                <el-input v-model="river.name" />
+            </el-form-item>
+            <el-form-item label="位置">
+                <el-input v-model="river.address" />
+            </el-form-item>
+        </el-form>
+        <template #footer>
+            <span class="dialog-footer">
+                <el-button @click="riverFormCancel">取消</el-button>
+                <el-button type="primary" @click="riverFormSubmit"
+                    >添加</el-button
+                >
+            </span>
+        </template>
+    </el-dialog>
 </template>
 
 <script lang="ts" setup>
-import { ref } from "vue";
+import { addRiver, getRivers } from "~/api/algae";
 const input = ref("");
+
+const dialogFormVisible = ref(false);
+const river = reactive({
+    name: "",
+    address: "",
+});
+const form = reactive({
+    name: "",
+    src: "",
+    river: river,
+});
+
+const rivers = reactive({});
+// 获取河流
+
+const fetchRivers = () => {
+    getRivers().then((res) => {
+        rivers =res;
+        console.log(res);
+    });
+};
+fetchRivers();
+// 添加河流
+const riverFormVisible = ref(false);
+const riverFormSubmit = () => {
+    if (river.name == "" || river.address == "") {
+        ElMessage({
+            message: "请填写完整信息",
+            type: "warning",
+        });
+        return;
+    }
+    addRiver(river).then((ele) => {
+        if (ele.code != 200) {
+            return;
+        }
+
+        ElMessage({
+            message: "添加河流成功",
+            type: "success",
+        });
+        riverFormVisible.value = false;
+    });
+};
+const riverFormCancel = () => {
+    river.name = "";
+    river.address = "";
+    riverFormVisible.value = false;
+};
 </script>
 
 <style scoped>

@@ -95,12 +95,12 @@ function useWaterfall() {
 
 const options = useWaterfall();
 const list = reactive();
-onMounted(() => {
-    getData(list).then((res) => {
-        console.log(res);
-    });
-});
-console.log(list);
+// onMounted(() => {
+//     getData(list).then((res) => {
+//         console.log(res);
+//     });
+// });
+// console.log(list);
 </script>
 
 <style scoped></style>

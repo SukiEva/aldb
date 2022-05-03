@@ -16,7 +16,7 @@ func InitRouter() *gin.Engine {
 	r.POST("register", v1.AddUser)
 	// api
 	api := r.Group("api")
-	api.Use(middleware.JWTAuthMiddleware())
+	// api.Use(middleware.JWTAuthMiddleware())
 	{
 		api.GET("data", v1.GetData)
 	}
@@ -25,5 +25,11 @@ func InitRouter() *gin.Engine {
 	//{
 	//	user.POST("add", v1.AddUser)
 	//}
+	// api/river
+	river := api.Group("river")
+	{
+		river.POST("add", v1.AddRiver)
+		river.GET("all", v1.GetRivers)
+	}
 	return r
 }
