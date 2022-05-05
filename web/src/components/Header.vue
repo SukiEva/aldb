@@ -48,8 +48,12 @@
             <el-form-item label="所属河流">
                 <el-space
                     ><el-select v-model="form.river" placeholder="选择河流">
-                        <el-option label="Zone one" value="shanghai" />
-                        <el-option label="Zone two" value="beijing" />
+                        <el-option
+                            v-for="item in rivers"
+                            :key="item.name"
+                            :label="item.name"
+                            :value="item.name"
+                        />
                     </el-select>
                     <el-button
                         type="primary"
@@ -75,7 +79,7 @@
         </el-form>
         <template #footer>
             <span class="dialog-footer">
-                <el-button @click="dialogFormVisible = false">Cancel</el-button>
+                <el-button @click="formCancel">Cancel</el-button>
                 <el-button type="primary" @click="dialogFormVisible = false"
                     >Confirm</el-button
                 >
@@ -106,28 +110,35 @@
 import { addRiver, getRivers } from "~/api/algae";
 const input = ref("");
 
+// 添加图像
 const dialogFormVisible = ref(false);
-const river = reactive({
-    name: "",
-    address: "",
-});
 const form = reactive({
     name: "",
     src: "",
-    river: river,
+    river: "",
 });
-
-const rivers = reactive({});
+const clearForm = () => {
+    form.name = "";
+    form.src = "";
+    form.river = "";
+};
+const formCancel = () => {
+    dialogFormVisible.value = false;
+    clearForm();
+};
 // 获取河流
-
+const rivers = ref([]);
 const fetchRivers = () => {
     getRivers().then((res) => {
-        rivers =res;
-        console.log(res);
+        rivers.value = res.data;
     });
 };
 fetchRivers();
 // 添加河流
+const river = reactive({
+    name: "",
+    address: "",
+});
 const riverFormVisible = ref(false);
 const riverFormSubmit = () => {
     if (river.name == "" || river.address == "") {
@@ -146,6 +157,7 @@ const riverFormSubmit = () => {
             message: "添加河流成功",
             type: "success",
         });
+        fetchRivers();
         riverFormVisible.value = false;
     });
 };
