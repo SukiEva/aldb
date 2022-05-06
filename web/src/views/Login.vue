@@ -169,10 +169,7 @@ const submitForm = () => {
       loginFormData.password === "" ||
       loginFormData.captchaValue === ""
   ) {
-    ElMessage({
-      message: "请填写完整信息",
-      type: "warning",
-    });
+    ElMessage.warning("请填写完整信息")
     return;
   }
   loginSubmit(loginFormData).then((ele) => {
@@ -193,17 +190,14 @@ const form = reactive({
 });
 const registerSubmit = () => {
   if (form.name === "" || form.password === "" || form.email === "") {
-    ElMessage({
-      message: "请填写完整信息",
-      type: "warning",
-    });
+    ElMessage.warning("请填写完整信息");
     return;
   }
   registerUser(form).then((ele) => {
     if (ele.code !== 200) {
       return;
     }
-    ElMessage("注册成功");
+    ElMessage.success("注册成功");
     loginFormData.email = form.email;
     loginFormData.password = form.password;
     dialogFormVisible.value = false;

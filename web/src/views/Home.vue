@@ -18,14 +18,29 @@
           :load-props="options.loadProps"
       >
         <template #item="{ item, url, index }">
-          <div class="card">
-            <LazyImg :url="url"/>
-            <p class="text">{{ index }}</p>
+          <div class="bg-gray-900 rounded-lg shadow-md overflow-hidden transition-all duration-300 ease-linear hover:shadow-lg hover:shadow-gray-600 group">
+            <div class="overflow-hidden">
+              <LazyImg :url="url" class="cursor-pointer transition-all duration-300 ease-linear group-hover:scale-105" @click="handlePreview(item)"/>
+            </div>
+            <div class="px-4 pt-2 pb-4 flex justify-between items-center border-t border-t-gray-800">
+              <h2 class="pb-4 text-gray-50 group-hover:text-yellow-500">
+                {{ item.name }}
+              </h2>
+              <button class="px-3 h-7 rounded-full bg-red-500 text-sm text-white shadow-lg transition-all duration-300 hover:bg-red-600" @click.stop="handleAnnotate(item)">
+                标注
+              </button>
+            </div>
           </div>
         </template>
       </Waterfall>
+
+      <!-- 大图预览 -->
+      <el-dialog v-model="previewVisible" :title="previewData.title" width="500px" center draggable>
+        <img style="width:100%" :src="previewData.url"/>
+      </el-dialog>
     </div>
-    <el-backtop :right="100" :bottom="100"/>
+
+    <el-backtop/>
   </el-main>
 </template>
 
@@ -82,6 +97,28 @@ function useWaterfall() {
   });
   return options;
 }
+
+// 预览
+function usePreview() {
+  const previewVisible = ref(false)
+  const previewData = reactive({
+    title: "",
+    url: "",
+  })
+  const handlePreview = (item: any) => {
+    previewData.title = item.river + " · " + item.name
+    previewData.url = item.src
+    previewVisible.value = true
+  }
+  return {
+    previewVisible,
+    previewData,
+    handlePreview,
+  }
+}
+
+const {previewVisible, previewData, handlePreview} = usePreview()
+
 const options = useWaterfall();
 // 数据获取
 const list = ref([]);
@@ -93,4 +130,6 @@ const fetchData = () => {
 fetchData()
 </script>
 
-<style scoped></style>
+<style scoped>
+@import "~/styles/index.css";
+</style>
