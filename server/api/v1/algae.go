@@ -18,6 +18,26 @@ func GetData(c *gin.Context) {
 	})
 }
 
+// AddAlga 添加藻类图像
+func AddAlga(c *gin.Context) {
+	code := e.CODE.Success
+	data := make(map[string]interface{})
+
+	var alga model.Alga
+	err := c.ShouldBindJSON(&alga)
+	if err != nil {
+		code = e.CODE.AlgaBindError
+	} else if err := model.AddAlga(alga); err != nil {
+		code = e.CODE.DataBaseError
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"code": code,
+		"msg":  e.ParseCode(code),
+		"data": data,
+	})
+}
+
 // AddRiver 添加河流
 func AddRiver(c *gin.Context) {
 	code := e.CODE.Success

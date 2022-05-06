@@ -12,7 +12,7 @@ func GetData() []Alga {
 	}
 	res := make([]Alga, 0)
 	for _, obj := range algae {
-		river := mgo.QueryRiver(obj.River)
+		river := mgo.QueryRiverById(obj.River)
 		annotations := make([]Annotation, 0)
 		for _, aid := range obj.Annotations {
 			anno := mgo.QueryAnnotation(aid)
@@ -23,16 +23,24 @@ func GetData() []Alga {
 			})
 		}
 		res = append(res, Alga{
-			Name: obj.Name,
-			Src:  obj.Src,
-			River: River{
-				Name:    river.Name,
-				Address: river.Address,
-			},
+			Name:        obj.Name,
+			Src:         obj.Src,
+			River:       river.Name,
 			Annotations: annotations,
 		})
 	}
 	return res
+}
+
+func AddAlga(obj Alga) error {
+	river := mgo.QueryRiverByName(obj.River)
+	err := mgo.InsertAlga(&database.Alga{
+		Name:        obj.Name,
+		Src:         obj.Src,
+		River:       river.Id,
+		Annotations: nil,
+	})
+	return err
 }
 
 func AddRiver(obj River) error {

@@ -19,13 +19,13 @@ func InitRouter() *gin.Engine {
 	// api.Use(middleware.JWTAuthMiddleware())
 	{
 		api.GET("data", v1.GetData)
-		api.POST("upload")
+		api.POST("upload", v1.Upload)
 	}
-	// api/algae
-	//algae := api.Group("algae")
-	//{
-	//	algae.POST("add")
-	//}
+	// api/alga
+	algae := api.Group("alga")
+	{
+		algae.POST("add", v1.AddAlga)
+	}
 	// api/user
 	//user := api.Group("user")
 	//{

@@ -19,9 +19,17 @@ func (m *Mgo) QueryRivers() ([]River, error) {
 	return batch, err
 }
 
-func (m *Mgo) QueryRiver(obj primitive.ObjectID) River {
+func (m *Mgo) QueryRiverById(obj primitive.ObjectID) River {
 	var one River
 	if err := river.Find(ctx, bson.M{"_id": obj}).One(&one); err != nil {
+		return River{}
+	}
+	return one
+}
+
+func (m *Mgo) QueryRiverByName(obj string) River {
+	var one River
+	if err := river.Find(ctx, bson.M{"name": obj}).One(&one); err != nil {
 		return River{}
 	}
 	return one

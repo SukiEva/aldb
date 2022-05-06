@@ -8,6 +8,15 @@ export const getData = (data: object) => {
     });
 };
 
+export const addAlga = (data: object) => {
+    return http.request({
+        url: "/api/alga/add",
+        method: "post",
+        data,
+    });
+};
+
+
 export const addRiver = (data: object) => {
     return http.request({
         url: "/api/river/add",

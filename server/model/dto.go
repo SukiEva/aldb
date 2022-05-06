@@ -6,9 +6,9 @@ type River struct {
 }
 
 type Alga struct {
-	Name        string `json:"name"`
-	Src         string `json:"src"`
-	River       `json:"river"`
+	Name        string       `json:"name"`
+	Src         string       `json:"src"`
+	River       string       `json:"river"`
 	Annotations []Annotation `json:"annotations"`
 }
 

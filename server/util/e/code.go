@@ -14,6 +14,10 @@ type code struct {
 	UserAlreadyExists  int
 	RiverBindError     int
 	RiverAlreadyExists int
+	FileUploadError    int
+	FileReceiveError   int
+	AlgaBindError      int
+	DataBaseError      int
 }
 
 var CODE code
@@ -33,6 +37,10 @@ func init() {
 		UserAlreadyExists:  501,
 		RiverBindError:     601,
 		RiverAlreadyExists: 602,
+		FileReceiveError:   701,
+		FileUploadError:    702,
+		AlgaBindError:      800,
+		DataBaseError:      900,
 	}
 }
 
@@ -65,6 +73,14 @@ func ParseCode(num int) string {
 		msg = "河流格式错误"
 	case CODE.RiverAlreadyExists:
 		msg = "河流已经存在"
+	case CODE.FileReceiveError:
+		msg = "接收文件失败"
+	case CODE.FileUploadError:
+		msg = "文件上传失败"
+	case CODE.AlgaBindError:
+		msg = "上传格式错误"
+	case CODE.DataBaseError:
+		msg = "数据库错误"
 	default:
 		msg = "未知错误"
 	}
