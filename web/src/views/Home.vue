@@ -1,5 +1,5 @@
 <template>
-  <Header/>
+  <Header :user-name="userName"/>
   <el-main>
     <div class="flex-auto overflow-y-auto">
       <Waterfall
@@ -26,14 +26,14 @@
               <h2 class="pb-4 text-gray-50 group-hover:text-yellow-500">
                 {{ item.name }}
               </h2>
-              <button class="px-3 h-7 rounded-full bg-red-500 text-sm text-white shadow-lg transition-all duration-300 hover:bg-red-600" @click.stop="handleAnnotate(item)">
+              <button class="px-3 h-7 rounded-full bg-red-500 text-sm text-white shadow-lg transition-all duration-300 hover:bg-red-600" @click.stop="showDrawer(item)">
                 标注
               </button>
             </div>
           </div>
         </template>
       </Waterfall>
-
+      <Drawer :alga="alga" :drawer="drawer" :user="userEmail" :grid-data="gridData" @update="closeDrawer"/>
       <!-- 大图预览 -->
       <el-dialog v-model="previewVisible" :title="previewData.title" width="500px" center draggable>
         <img style="width:100%" :src="previewData.url"/>
@@ -49,7 +49,20 @@ import {LazyImg, Waterfall} from "vue-waterfall-plugin-next";
 import "vue-waterfall-plugin-next/style.css";
 import loading from "~/assets/loading.png";
 import error from "~/assets/error.png";
-import {getData} from "~/api/algae";
+import {getAnno, getData} from "~/api/algae";
+import {useRoute} from 'vue-router'
+import {getUser} from "~/api/user";
+
+// 获取用户信息
+const route = useRoute()
+const userEmail = route.params.userEmail as string
+const userName = ref("用户")
+const fetchUser = () => {
+  getUser(userEmail).then((res) => {
+    userName.value = res.data.name
+  })
+}
+if (userName.value == "用户") fetchUser()
 
 // 瀑布流图片设置
 function useWaterfall() {
@@ -128,6 +141,26 @@ const fetchData = () => {
   });
 };
 fetchData()
+// 抽屉打开
+const alga = ref({})
+const drawer = ref(false)
+// 已有标注
+const gridData = ref([])
+const fetchAnno = (item: any) => {
+  getAnno(item.name).then((res) => {
+    gridData.value = res.data;
+  });
+};
+const showDrawer = (item: any) => {
+  fetchAnno(item)
+  alga.value = item
+  drawer.value = true
+  console.log(gridData.value)
+}
+// 抽屉关闭
+const closeDrawer = (update: any) => {
+  drawer.value = false
+}
 </script>
 
 <style scoped>

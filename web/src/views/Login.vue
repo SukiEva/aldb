@@ -178,7 +178,8 @@ const submitForm = () => {
       return;
     }
     localStorage.setItem("Authorization", ele.data.token);
-    router.push({name: "Home"});
+    //localStorage.setItem("User", loginFormData.email)
+    router.push({name: "Home", params: {userEmail: loginFormData.email}});
   });
 };
 // 注册

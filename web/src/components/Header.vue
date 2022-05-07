@@ -18,7 +18,7 @@
             @command="handleCommand"
         >
                     <span class="el-dropdown-link">
-                        <el-avatar> 用户 </el-avatar>
+                        <el-avatar> {{ userName }} </el-avatar>
                     </span>
           <template #dropdown>
             <el-dropdown-menu>
@@ -43,6 +43,7 @@
 </template>
 
 <script lang="ts" setup>
+const props = defineProps(['userName'])
 </script>
 
 <style scoped>

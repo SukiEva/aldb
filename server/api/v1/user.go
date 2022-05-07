@@ -24,3 +24,14 @@ func AddUser(c *gin.Context) {
 		"data": data,
 	})
 }
+
+func GetUser(c *gin.Context) {
+	code := e.CODE.Success
+	email := c.Query("email")
+	res := model.GetUser(email)
+	c.JSON(http.StatusOK, gin.H{
+		"code": code,
+		"msg":  e.ParseCode(code),
+		"data": res,
+	})
+}

@@ -99,7 +99,7 @@ const formSubmit = () => {
 }
 // 上传图片
 const disabled = ref(false)
-const uploadUrl = "http://127.0.0.1:8080/api/upload"
+const uploadUrl = import.meta.env.VITE_APP_BASE_API + "/api/upload"
 const afterUpload: UploadProps['onSuccess'] = (response: any, uploadFile: UploadFile, uploadFiles: UploadFiles) => {
   if (response.code != 200) {
     ElMessage.error("上传失败")

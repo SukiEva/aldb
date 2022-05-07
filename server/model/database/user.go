@@ -12,18 +12,17 @@ type Operator struct {
 	Password           string               `json:"password" bson:"password"`
 	Email              string               `json:"email" bson:"email"`
 	Access             int                  `json:"access" bson:"access"`
-	Operations         []primitive.ObjectID `json:"operations" bson:"operations"`
+	Annotations        []primitive.ObjectID `json:"annotations" bson:"annotations"`
 }
 
-type Operation struct {
-	field.DefaultField `bson:",inline"`
-	OperatorEmail      string               `json:"operatorEmail" bson:"operatorEmail"`
-	Annotation         primitive.ObjectID   `json:"annotation" bson:"annotation"`
-	OldAnnotations     []primitive.ObjectID `json:"oldAnnotations" bson:"oldAnnotations"`
+func (m *Mgo) QueryOperatorByEmail(email string) (*Operator, error) {
+	var one *Operator
+	err := operator.Find(ctx, bson.M{"email": email}).One(&one)
+	return one, err
 }
 
-func (m *Mgo) CheckOperator(email, password string) (Operator, error) {
-	var one Operator
+func (m *Mgo) CheckOperator(email, password string) (*Operator, error) {
+	var one *Operator
 	err := operator.Find(ctx, bson.M{"email": email, "password": password}).One(&one)
 	return one, err
 }
@@ -41,13 +40,6 @@ func (m *Mgo) ExistsOperator(email string) bool {
 	return true
 }
 
-func (m *Mgo) UpsertOperator(obj *Operator) error {
-	_, err := operator.Upsert(ctx, bson.M{"_id": obj.Id}, obj)
-	return err
-}
-
-func (m *Mgo) QueryOperations(email string) ([]Operation, error) {
-	var batch []Operation
-	err := operation.Find(ctx, bson.M{"operatorEmail": email}).All(&batch)
-	return batch, err
+func (m *Mgo) UpdateOperator(id primitive.ObjectID, annotations []primitive.ObjectID) error {
+	return operator.UpdateOne(ctx, bson.M{"_id": id}, bson.M{"$set": bson.M{"annotations": annotations}})
 }

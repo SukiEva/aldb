@@ -6,27 +6,17 @@ import (
 )
 
 func GetData() []Alga {
+	res := make([]Alga, 0)
 	algae, err := mgo.QueryAlgae()
 	if err != nil {
-		return nil
+		return res
 	}
-	res := make([]Alga, 0)
 	for _, obj := range algae {
 		river := mgo.QueryRiverById(obj.River)
-		annotations := make([]Annotation, 0)
-		for _, aid := range obj.Annotations {
-			anno := mgo.QueryAnnotation(aid)
-			annotations = append(annotations, Annotation{
-				Description: anno.Description,
-				Format:      anno.Format,
-				Url:         anno.Url,
-			})
-		}
 		res = append(res, Alga{
-			Name:        obj.Name,
-			Src:         obj.Src,
-			River:       river.Name,
-			Annotations: annotations,
+			Name:  obj.Name,
+			Src:   obj.Src,
+			River: river.Name,
 		})
 	}
 	return res

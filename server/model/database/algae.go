@@ -14,14 +14,14 @@ type Alga struct {
 	Annotations        []primitive.ObjectID `json:"annotations" bson:"annotations"`
 }
 
-func (m *Mgo) QueryAlgae() ([]Alga, error) {
-	var batch []Alga
+func (m *Mgo) QueryAlgae() ([]*Alga, error) {
+	var batch []*Alga
 	err := algae.Find(ctx, bson.M{}).All(&batch)
 	return batch, err
 }
 
-func (m *Mgo) QueryAlga(name string) (Alga, error) {
-	var one Alga
+func (m *Mgo) QueryAlgaByName(name string) (*Alga, error) {
+	var one *Alga
 	err := algae.Find(ctx, bson.M{"name": name}).One(&one)
 	return one, err
 }
@@ -31,9 +31,8 @@ func (m *Mgo) InsertAlga(obj *Alga) error {
 	return err
 }
 
-func (m *Mgo) UpsertAlga(obj *Alga) error {
-	_, err := algae.Upsert(ctx, bson.M{"_id": obj.Id}, obj)
-	return err
+func (m *Mgo) UpdateAlga(id primitive.ObjectID, annotations []primitive.ObjectID) error {
+	return algae.UpdateOne(ctx, bson.M{"_id": id}, bson.M{"$set": bson.M{"annotations": annotations}})
 }
 
 func (m *Mgo) DropAlga(name string) error {

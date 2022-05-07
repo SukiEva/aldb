@@ -17,7 +17,9 @@ type code struct {
 	FileUploadError    int
 	FileReceiveError   int
 	AlgaBindError      int
+	AnnoBindError      int
 	DataBaseError      int
+	DataBindError      int
 }
 
 var CODE code
@@ -40,7 +42,9 @@ func init() {
 		FileReceiveError:   701,
 		FileUploadError:    702,
 		AlgaBindError:      800,
+		AnnoBindError:      801,
 		DataBaseError:      900,
+		DataBindError:      901,
 	}
 }
 
@@ -78,9 +82,13 @@ func ParseCode(num int) string {
 	case CODE.FileUploadError:
 		msg = "文件上传失败"
 	case CODE.AlgaBindError:
-		msg = "上传格式错误"
+		msg = "图像提交数据错误"
+	case CODE.AnnoBindError:
+		msg = "标注提交数据错误"
 	case CODE.DataBaseError:
 		msg = "数据库错误"
+	case CODE.DataBindError:
+		msg = "数据绑定错误"
 	default:
 		msg = "未知错误"
 	}

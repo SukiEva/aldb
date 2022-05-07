@@ -25,12 +25,18 @@ func InitRouter() *gin.Engine {
 	algae := api.Group("alga")
 	{
 		algae.POST("add", v1.AddAlga)
+		algae.GET("anno", v1.GetAnnotationByAlga)
+	}
+	// api/anno
+	anno := api.Group("anno")
+	{
+		anno.POST("add", v1.AddAnnotation)
 	}
 	// api/user
-	//user := api.Group("user")
-	//{
-	//	user.POST("add", v1.AddUser)
-	//}
+	user := api.Group("user")
+	{
+		user.GET("info", v1.GetUser)
+	}
 	// api/river
 	river := api.Group("river")
 	{

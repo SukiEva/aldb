@@ -42,6 +42,6 @@ func JWTAuthMiddleware() gin.HandlerFunc {
 		// 将当前请求信息保存到请求的上下文
 		c.Set("UserEmail", claims.UserEmail)
 		c.Set("UserPwd", claims.UserPwd)
-		c.Next() //后续处理函数 c.Get("UserName") 获取当前请求的用户信息
+		c.Next() //后续处理函数 c.Get("UserEmail") 获取当前请求的用户信息
 	}
 }

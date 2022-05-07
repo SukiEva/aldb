@@ -7,3 +7,10 @@ export const registerUser = (data: object) => {
         data,
     });
 };
+
+export const getUser = (query: string) => {
+    return http.request({
+        url: "/api/user/info?email=" + query,
+        method: "get"
+    });
+};
