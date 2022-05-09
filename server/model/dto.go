@@ -1,7 +1,5 @@
 package model
 
-import "time"
-
 type River struct {
 	Name    string `json:"name" binding:"required"`
 	Address string `json:"address" binding:"required"`
@@ -14,11 +12,11 @@ type Alga struct {
 }
 
 type Annotation struct {
-	Description string    `json:"description" binding:"required"`
-	Format      string    `json:"format" binding:"required"`
-	Url         string    `json:"url" binding:"required"`
-	CreateAt    time.Time `json:"createAt" binding:"-"`
-	UpdateAt    time.Time `json:"updateAt" binding:"-"`
+	Description string `json:"description" binding:"required"`
+	Format      string `json:"format" binding:"required"`
+	Url         string `json:"url" binding:"required"`
+	CreateAt    string `json:"createAt" binding:"-"`
+	UpdateAt    string `json:"updateAt" binding:"-"`
 }
 
 type Operator struct {
@@ -26,6 +24,7 @@ type Operator struct {
 	Password string `json:"password" binding:"required"`
 	Email    string `json:"email" binding:"required"`
 	Access   int    `json:"access" binding:"-"`
+	CreateAt string `json:"createAt" binding:"-"`
 }
 
 type Anno struct {

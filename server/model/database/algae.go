@@ -26,9 +26,9 @@ func (m *Mgo) QueryAlgaByName(name string) (*Alga, error) {
 	return one, err
 }
 
-func (m *Mgo) InsertAlga(obj *Alga) error {
-	_, err := algae.InsertOne(ctx, obj)
-	return err
+func (m *Mgo) InsertAlga(obj *Alga) (interface{}, error) {
+	res, err := algae.InsertOne(ctx, obj)
+	return res.InsertedID, err
 }
 
 func (m *Mgo) UpdateAlga(id primitive.ObjectID, annotations []primitive.ObjectID) error {

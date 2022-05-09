@@ -43,6 +43,10 @@ func (m *Mgo) ExistsRiver(name string) bool {
 	return true
 }
 
+func (m *Mgo) UpdateRiver(id primitive.ObjectID, algae []primitive.ObjectID) error {
+	return river.UpdateOne(ctx, bson.M{"_id": id}, bson.M{"$set": bson.M{"algae": algae}})
+}
+
 func (m *Mgo) InsertRiver(r *River) error {
 	_, err := river.InsertOne(ctx, r)
 	return err

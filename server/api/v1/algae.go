@@ -4,6 +4,7 @@ import (
 	"github.com/SukiEva/aldb/server/model"
 	"github.com/SukiEva/aldb/server/util/e"
 	"github.com/gin-gonic/gin"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"net/http"
 )
 
@@ -27,10 +28,17 @@ func AddAlga(c *gin.Context) {
 	err := c.ShouldBindJSON(&alga)
 	if err != nil {
 		code = e.CODE.AlgaBindError
-	} else if err := model.AddAlga(alga); err != nil {
-		code = e.CODE.DataBaseError
+	} else {
+		res, err := model.AddAlga(alga)
+		id := res.(primitive.ObjectID)
+		if err != nil {
+			code = e.CODE.DataBaseError
+		} else {
+			if err := model.BindToRiver(alga.River, id); err != nil {
+				code = e.CODE.DataBindError
+			}
+		}
 	}
-
 	c.JSON(http.StatusOK, gin.H{
 		"code": code,
 		"msg":  e.ParseCode(code),

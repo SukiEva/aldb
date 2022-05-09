@@ -17,8 +17,8 @@ func GetAnnotationByAlga(algaName string) []Annotation {
 			Description: anno.Description,
 			Format:      anno.Format,
 			Url:         anno.Url,
-			CreateAt:    anno.CreateAt,
-			UpdateAt:    anno.UpdateAt,
+			CreateAt:    anno.CreateAt.Format("2006-01-02 15:04"),
+			UpdateAt:    anno.UpdateAt.Format("2006-01-02 15:04"),
 		})
 	}
 	return res

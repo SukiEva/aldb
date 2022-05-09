@@ -29,5 +29,10 @@ func GetUser(email string) Operator {
 		Password: "",
 		Email:    user.Email,
 		Access:   user.Access,
+		CreateAt: user.CreateAt.Format("2006-01-02"),
 	}
+}
+
+func ChangePassword(email string, newPassword string) error {
+	return mgo.UpdatePassword(email, newPassword)
 }

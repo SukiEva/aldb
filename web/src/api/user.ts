@@ -14,3 +14,11 @@ export const getUser = (query: string) => {
         method: "get"
     });
 };
+
+export const changePassword = (data: object) => {
+    return http.request({
+        url: "/api/user/pwd",
+        method: "post",
+        data,
+    });
+};

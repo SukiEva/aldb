@@ -1,62 +1,61 @@
 <template>
-    <div class="error-page">
-        <div class="error-code">4<span>0</span>4</div>
-        <div class="error-desc">啊哦~ 你所访问的页面不存在</div>
-        <div class="error-handle">
-            <router-link to="/">
-                <el-button type="primary" size="large">返回首页</el-button>
-            </router-link>
-            <el-button class="error-btn" type="primary" size="large" @click="goBack">返回上一页</el-button>
-        </div>
+  <div>
+    <div class="big">
+      <div class="inner">
+        <img src="../assets/notFound.png" alt="not"/>
+        <p>页面被神秘力量吸走了</p>
+        <p>↓</p>
+        <el-space class="leftPic">
+          <router-link to="/">
+            <el-button type="primary" size="large">返回首页</el-button>
+          </router-link>
+          <el-button class="error-btn" type="primary" size="large" @click="goBack">返回上一页</el-button>
+        </el-space>
+      </div>
     </div>
+  </div>
 </template>
 
 <script>
-import { useRouter } from "vue-router";
+import {useRouter} from "vue-router";
+
 export default {
-    name: "404",
-    setup() {
-        const router = useRouter();
-        const goBack = () => {
-            router.go(-1);
-        };
-        return {
-            goBack,
-        };
-    },
+  name: "404",
+  setup() {
+    const router = useRouter();
+    const goBack = () => {
+      router.go(-1);
+    };
+    return {
+      goBack,
+    };
+  },
 };
 </script>
 
 
-<style scoped>
-.error-page {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    width: 100%;
-    height: 100%;
-    background: #f3f3f3;
-    box-sizing: border-box;
+<style lang="scss">
+.big {
+  width: 100%;
+  height: calc(100vh);
+  background-color: rgb(244, 244, 244);
+  position: relative;
 }
-.error-code {
-    line-height: 1;
-    font-size: 250px;
-    font-weight: bolder;
-    color: #2d8cf0;
+
+.inner {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
-.error-code span {
-    color: #00a854;
+
+.inner p {
+  text-align: center;
+  font-size: 24px;
 }
-.error-desc {
-    font-size: 30px;
-    color: #777;
-}
-.error-handle {
-    margin-top: 30px;
-    padding-bottom: 200px;
-}
-.error-btn {
-    margin-left: 100px;
+
+.inner .leftPic {
+  display:flex;
+  justify-content:center;
 }
 </style>

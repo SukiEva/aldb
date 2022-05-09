@@ -3,7 +3,7 @@
     添加
     <i-ep-upload/>
   </el-button>
-  <el-dialog v-model="dialogFormVisible" title="藻类图像上传" width="30%">
+  <el-dialog v-model="dialogFormVisible" title="藻类图像上传" width="30%" destroy-on-close>
     <el-form :model="form">
       <el-form-item label="名称">
         <el-input v-model="form.name"/>
@@ -45,7 +45,7 @@
             </span>
     </template>
   </el-dialog>
-  <el-dialog v-model="riverFormVisible" title="添加河流" width="30%" center>
+  <el-dialog v-model="riverFormVisible" title="添加河流" width="30%" center destroy-on-close>
     <el-form :model="river">
       <el-form-item label="名称">
         <el-input v-model="river.name"/>

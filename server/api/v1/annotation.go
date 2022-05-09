@@ -1,7 +1,6 @@
 package v1
 
 import (
-	"fmt"
 	"github.com/SukiEva/aldb/server/model"
 	"github.com/SukiEva/aldb/server/util/e"
 	"github.com/gin-gonic/gin"
@@ -13,7 +12,6 @@ func GetAnnotationByAlga(c *gin.Context) {
 	code := e.CODE.Success
 	alga := c.Query("alga")
 	res := model.GetAnnotationByAlga(alga)
-	fmt.Println(res)
 	c.JSON(http.StatusOK, gin.H{
 		"code": code,
 		"msg":  e.ParseCode(code),

@@ -3,6 +3,7 @@ package model
 import (
 	"errors"
 	"github.com/SukiEva/aldb/server/model/database"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 func GetData() []Alga {
@@ -22,15 +23,25 @@ func GetData() []Alga {
 	return res
 }
 
-func AddAlga(obj Alga) error {
+func AddAlga(obj Alga) (interface{}, error) {
 	river := mgo.QueryRiverByName(obj.River)
-	err := mgo.InsertAlga(&database.Alga{
+	return mgo.InsertAlga(&database.Alga{
 		Name:        obj.Name,
 		Src:         obj.Src,
 		River:       river.Id,
 		Annotations: nil,
 	})
-	return err
+}
+
+func BindToRiver(riverName string, id primitive.ObjectID) error {
+	river := mgo.QueryRiverByName(riverName)
+	var algae []primitive.ObjectID
+	if algae == nil {
+		algae = []primitive.ObjectID{id}
+	} else {
+		algae = append(algae, id)
+	}
+	return mgo.UpdateRiver(river.Id, algae)
 }
 
 func AddRiver(obj River) error {

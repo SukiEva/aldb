@@ -4,13 +4,19 @@
       :title="alga.name"
       size="50%"
       :before-close="handleClose"
+      destroy-on-close
   >
     <el-table :data="gridData">
       <el-table-column property="createAt" label="创建时间"/>
       <el-table-column property="updateAt" label="修改时间"/>
       <el-table-column property="description" label="描述"/>
       <el-table-column property="format" label="格式"/>
-      <el-table-column property="url" label="下载"/>
+      <el-table-column label="操作">
+        <template #default="scope">
+          <el-button size="small" type="success" @click="download(scope.row.url)">下载
+          </el-button>
+        </template>
+      </el-table-column>
     </el-table>
     <br>
     <el-collapse>
@@ -56,14 +62,17 @@
 </template>
 
 <script lang="ts" setup>
-import {addAnno, getAnno} from "~/api/algae";
+import {addAnno} from "~/api/algae";
 import {UploadFile, UploadFiles, UploadProps} from "element-plus/es";
 
 const props = defineProps(['alga', 'drawer', 'user', 'gridData'])
 const emit = defineEmits(['update'])
-
+// 下载标注
+const download = (row: any) => {
+  window.open(row)
+}
 // 添加标注
-const formats = ['XML', 'COCO', 'VOC', 'CSV', 'JSON']
+const formats = ref(['XML', 'COCO', 'VOC', 'CSV', 'JSON'])
 const form = reactive({
   user: props.user,
   alga: props.alga.name,
@@ -74,8 +83,10 @@ const form = reactive({
 const submitForm = () => {
   form.alga = props.alga.name
   form.user = props.user
-  console.log(form.alga)
-  console.log(form.user)
+  if (form.user == "" || form.alga == "" || form.description == "" || form.format == "" || form.url == "") {
+    ElMessage.warning("请补充完整信息")
+    return
+  }
   addAnno(form).then((res) => {
     if (res.code != 200) {
       return

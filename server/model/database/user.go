@@ -43,3 +43,7 @@ func (m *Mgo) ExistsOperator(email string) bool {
 func (m *Mgo) UpdateOperator(id primitive.ObjectID, annotations []primitive.ObjectID) error {
 	return operator.UpdateOne(ctx, bson.M{"_id": id}, bson.M{"$set": bson.M{"annotations": annotations}})
 }
+
+func (m *Mgo) UpdatePassword(email string, newPassword string) error {
+	return operator.UpdateOne(ctx, bson.M{"email": email}, bson.M{"$set": bson.M{"password": newPassword}})
+}

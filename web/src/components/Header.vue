@@ -23,14 +23,10 @@
           <template #dropdown>
             <el-dropdown-menu>
               <el-dropdown-item command="user"
-              >个人信息
+              >个人中心
               </el-dropdown-item
               >
-              <el-dropdown-item command="anno"
-              >个人标注
-              </el-dropdown-item
-              >
-              <el-dropdown-item divided command="loginout"
+              <el-dropdown-item divided command="out"
               >退出登录
               </el-dropdown-item
               >
@@ -43,7 +39,17 @@
 </template>
 
 <script lang="ts" setup>
+import {useRouter} from "vue-router";
+
+const router = useRouter();
 const props = defineProps(['userName'])
+
+const handleCommand = (command: string | number | object) => {
+  if (command == "out") {
+    sessionStorage.clear()
+    router.push({name: "Login"})
+  }
+}
 </script>
 
 <style scoped>

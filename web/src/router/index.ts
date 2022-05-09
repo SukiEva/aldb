@@ -1,18 +1,20 @@
-import { createRouter, createWebHashHistory } from "vue-router";
-import Home from "../views/Home.vue";
-import NotFound from "../views/404.vue";
-import Login from "../views/Login.vue";
+import {createRouter, createWebHashHistory} from "vue-router";
 
 const routes = [
     {
         path: "/",
         name: "Home",
-        component: Home,
+        component: () => import('../views/Home.vue'),
     },
     {
         path: "/login",
         name: "Login",
-        component: Login,
+        component: () => import('../views/Login.vue'),
+    },
+    {
+        path: '/:catchAll(.*)',
+        name: '404',
+        component: () => import('../views/404.vue')
     },
 ];
 

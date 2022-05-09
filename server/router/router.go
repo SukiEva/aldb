@@ -36,6 +36,7 @@ func InitRouter() *gin.Engine {
 	user := api.Group("user")
 	{
 		user.GET("info", v1.GetUser)
+		user.POST("pwd", v1.ChangePassword)
 	}
 	// api/river
 	river := api.Group("river")

@@ -1,10 +1,12 @@
 <template>
+<!--  <div id="app">-->
     <router-view />
+<!--  </div>-->
 </template>
 
 <style>
-/* #app {
-    text-align: center;
-    color: var(--el-text-color-primary);
-} */
+#app {
+  height: 100vh;
+  font-weight: 400 !important;
+}
 </style>

@@ -177,7 +177,8 @@ const submitForm = () => {
       loginVerify();
       return;
     }
-    localStorage.setItem("Authorization", ele.data.token);
+    sessionStorage.setItem("Authorization", ele.data.token);
+    sessionStorage.setItem("UserEmail", loginFormData.email)
     //localStorage.setItem("User", loginFormData.email)
     router.push({name: "Home", params: {userEmail: loginFormData.email}});
   });
@@ -213,5 +214,5 @@ const cancelSubmit = () => {
 </script>
 
 <style lang="scss" scoped>
-@import "~/styles/login.scss";
+@import "../styles/login.scss";
 </style>

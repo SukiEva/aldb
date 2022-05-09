@@ -1,14 +1,17 @@
-import axios, { AxiosInstance, AxiosRequestConfig } from "axios";
-import { ElMessage } from "element-plus";
+import axios, {AxiosInstance, AxiosRequestConfig} from "axios";
+import {ElMessage} from "element-plus";
 
 // 接口类型和方法
 interface BaseType {
     baseURL: string;
+
     getConfigParams(): any;
+
     interceptors(
         instance: AxiosInstance,
         url: string | number | undefined
     ): any;
+
     request(options: AxiosRequestConfig): any;
 }
 
@@ -42,10 +45,12 @@ let removeSource = (config: any) => {
 class AxiosHttpRequest implements BaseType {
     baseURL: string;
     timeout: number;
+
     constructor() {
         this.baseURL = import.meta.env.VITE_APP_BASE_API;
         this.timeout = 1500;
     }
+
     // 配置参数
     getConfigParams() {
         const config = {
@@ -55,6 +60,7 @@ class AxiosHttpRequest implements BaseType {
         };
         return config;
     }
+
     // 拦截设置
     interceptors(instance: AxiosInstance, url: string | number | undefined) {
         // 请求拦截
@@ -71,9 +77,9 @@ class AxiosHttpRequest implements BaseType {
                 });
                 // 添加全局的loading..
                 // 请求头携带token
-                if (localStorage.getItem("Authorization"))
+                if (sessionStorage.getItem("Authorization"))
                     config.headers["Authorization"] =
-                        localStorage.getItem("Authorization");
+                        sessionStorage.getItem("Authorization");
                 config.headers["Content-Type"] =
                     "application/json;charset=utf-8";
                 // get请求映射params参数
@@ -123,12 +129,12 @@ class AxiosHttpRequest implements BaseType {
                     return Promise.resolve(res.data);
                 } else {
                     ElMessage.error(msg);
-                    return Promise.reject(res.data);
+                    return Promise.resolve(res.data);
                 }
             },
             (error: any) => {
                 console.log("err" + error);
-                let { message } = error;
+                let {message} = error;
                 if (message == "Network Error") {
                     message = "后端接口连接异常";
                 } else if (message.includes("timeout")) {
