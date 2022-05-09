@@ -13,8 +13,8 @@ type River struct {
 	Algae              []primitive.ObjectID `json:"algae" bson:"algae"`
 }
 
-func (m *Mgo) QueryRivers() ([]River, error) {
-	var batch []River
+func (m *Mgo) QueryRivers() ([]*River, error) {
+	var batch []*River
 	err := river.Find(ctx, bson.M{}).All(&batch)
 	return batch, err
 }

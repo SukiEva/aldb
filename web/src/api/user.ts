@@ -15,6 +15,13 @@ export const getUser = (query: string) => {
     });
 };
 
+export const getUsers = () => {
+    return http.request({
+        url: "/api/user/all",
+        method: "get"
+    });
+};
+
 export const changePassword = (data: object) => {
     return http.request({
         url: "/api/user/pwd",

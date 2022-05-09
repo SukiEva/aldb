@@ -36,6 +36,26 @@ func GetUser(c *gin.Context) {
 	})
 }
 
+func GetUsers(c *gin.Context) {
+	res, _ := c.Get("UserEmail")
+	email := res.(string)
+	if !model.CheckAdmin(email) {
+		code := e.CODE.AuthAccessError
+		c.JSON(http.StatusOK, gin.H{
+			"code": code,
+			"msg":  e.ParseCode(code),
+			"data": nil,
+		})
+	} else {
+		code := e.CODE.Success
+		c.JSON(http.StatusOK, gin.H{
+			"code": code,
+			"msg":  e.ParseCode(code),
+			"data": model.GetUsers(),
+		})
+	}
+}
+
 func ChangePassword(c *gin.Context) {
 	code := e.CODE.Success
 	data := make(map[string]interface{})

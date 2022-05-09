@@ -10,6 +10,7 @@ type code struct {
 	AuthTokenError     int
 	AuthTokenTimeOut   int
 	AuthError          int
+	AuthAccessError    int
 	UserBindError      int
 	UserAlreadyExists  int
 	RiverBindError     int
@@ -35,6 +36,7 @@ func init() {
 		AuthTokenError:     403,
 		AuthTokenTimeOut:   404,
 		AuthError:          405,
+		AuthAccessError:    406,
 		UserBindError:      500,
 		UserAlreadyExists:  501,
 		RiverBindError:     601,
@@ -69,6 +71,8 @@ func ParseCode(num int) string {
 		msg = "授权超时，请重新登录"
 	case CODE.AuthError:
 		msg = "密码错误"
+	case CODE.AuthAccessError:
+		msg = "权限不足"
 	case CODE.UserBindError:
 		msg = "用户格式错误"
 	case CODE.UserAlreadyExists:

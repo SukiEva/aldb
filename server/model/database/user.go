@@ -21,6 +21,12 @@ func (m *Mgo) QueryOperatorByEmail(email string) (*Operator, error) {
 	return one, err
 }
 
+func (m *Mgo) QueryOperators() ([]*Operator, error) {
+	var batch []*Operator
+	err := operator.Find(ctx, bson.M{}).All(&batch)
+	return batch, err
+}
+
 func (m *Mgo) CheckOperator(email, password string) (*Operator, error) {
 	var one *Operator
 	err := operator.Find(ctx, bson.M{"email": email, "password": password}).One(&one)

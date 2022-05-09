@@ -11,3 +11,11 @@ func CheckAuth(email, password string) bool {
 	}
 	return true
 }
+
+func CheckAdmin(email string) bool {
+	user, err := mgo.QueryOperatorByEmail(email)
+	if err != nil || user.Access == 0 {
+		return false
+	}
+	return true
+}

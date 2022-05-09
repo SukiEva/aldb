@@ -33,6 +33,24 @@ func GetUser(email string) Operator {
 	}
 }
 
+func GetUsers() []Operator {
+	res := make([]Operator, 0)
+	users, err := mgo.QueryOperators()
+	if err != nil {
+		return res
+	}
+	for _, obj := range users {
+		res = append(res, Operator{
+			Name:     obj.Name,
+			Password: "",
+			Email:    obj.Email,
+			Access:   obj.Access,
+			CreateAt: obj.CreateAt.Format("2006-01-02"),
+		})
+	}
+	return res
+}
+
 func ChangePassword(email string, newPassword string) error {
 	return mgo.UpdatePassword(email, newPassword)
 }

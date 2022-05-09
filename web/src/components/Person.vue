@@ -34,7 +34,9 @@
       <el-col :span="18">
         <div class="user-addcount">
           <el-tabs v-model="activeName">
-            <el-tab-pane v-if="perm" label="用户管理" name="control"></el-tab-pane>
+            <el-tab-pane v-if="perm" label="用户管理" name="control">
+              <Grant/>
+            </el-tab-pane>
             <el-tab-pane v-else label="标注管理" name="control"></el-tab-pane>
             <el-tab-pane label="账号管理" name="info">
               <ul>
