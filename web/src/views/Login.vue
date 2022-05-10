@@ -117,7 +117,7 @@
   </div>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 import {getCaptcha, loginSubmit} from "~/api/auth";
 import {registerUser} from "~/api/user";
 import {useRouter} from "vue-router";
@@ -139,12 +139,12 @@ const loginVerify = () => {
 loginVerify();
 
 // 验证函数
-const checkEmail = (rule, value, callback) => {
+const checkEmail = (rule: any, value: string, callback: any) => {
   const regEmail = /^([a-zA-Z]|[0-9])(\w|\-)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/;
   if (regEmail.test(value)) return callback();
   else return callback(new Error("请输入正确的邮箱"));
 };
-const checkPassword = (rule, value, callback) => {
+const checkPassword = (rule: any, value: string | any[], callback: any) => {
   if (value.length < 1) {
     return callback(new Error("请输入密码"));
   } else {
@@ -173,14 +173,14 @@ const submitForm = () => {
     return;
   }
   loginSubmit(loginFormData).then((ele) => {
-    if (ele.code !== 200) {
+    if (ele.code != 200) {
       loginVerify();
       return;
     }
     sessionStorage.setItem("Authorization", ele.data.token);
-    sessionStorage.setItem("UserEmail", loginFormData.email)
-    //localStorage.setItem("User", loginFormData.email)
-    router.push({name: "Home", params: {userEmail: loginFormData.email}});
+    sessionStorage.setItem("UserEmail", loginFormData.email);
+    ElMessage.success("登录成功");
+    router.push({name: "Home"});
   });
 };
 // 注册

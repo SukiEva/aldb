@@ -22,6 +22,22 @@ export const getUsers = () => {
     });
 };
 
+
+export const updateUser = (data: object) => {
+    return http.request({
+        url: "/api/user/update",
+        method: "post",
+        data,
+    });
+};
+
+export const deleteUser = (query: string) => {
+    return http.request({
+        url: "/api/user/delete?email=" + query,
+        method: "get"
+    });
+};
+
 export const changePassword = (data: object) => {
     return http.request({
         url: "/api/user/pwd",

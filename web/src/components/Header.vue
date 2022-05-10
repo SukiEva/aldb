@@ -48,6 +48,8 @@ const handleCommand = (command: string | number | object) => {
   if (command == "out") {
     sessionStorage.clear()
     router.push({name: "Login"})
+  } else if (command == "user") {
+    router.push({name: "User"})
   }
 }
 </script>

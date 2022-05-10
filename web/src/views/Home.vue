@@ -1,8 +1,7 @@
 <template>
   <Header :user-name="userName"/>
   <el-main>
-    <!--    <Main :user-email="userEmail"/>-->
-    <Person :user-info="userInfo"/>
+    <Main :user-email="userEmail"/>
   </el-main>
 </template>
 
@@ -18,11 +17,9 @@ if (userEmail == null) {
   router.push({name: "Login"})
 }
 const userName = ref("用户")
-const userInfo = ref({})
 const fetchUser = () => {
   getUser(userEmail).then((res) => {
     userName.value = res.data.name
-    userInfo.value = res.data
   })
 }
 fetchUser()

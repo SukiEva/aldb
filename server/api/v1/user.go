@@ -25,6 +25,24 @@ func AddUser(c *gin.Context) {
 	})
 }
 
+func UpdateUser(c *gin.Context) {
+	code := e.CODE.Success
+	data := make(map[string]interface{})
+
+	var user model.Operator
+	err := c.ShouldBindJSON(&user)
+	if err != nil {
+		code = e.CODE.UserBindError
+	} else if err := model.UpdateUser(user); err != nil {
+		code = e.CODE.DataBaseError
+	}
+	c.JSON(http.StatusOK, gin.H{
+		"code": code,
+		"msg":  e.ParseCode(code),
+		"data": data,
+	})
+}
+
 func GetUser(c *gin.Context) {
 	code := e.CODE.Success
 	email := c.Query("email")
@@ -52,6 +70,29 @@ func GetUsers(c *gin.Context) {
 			"code": code,
 			"msg":  e.ParseCode(code),
 			"data": model.GetUsers(),
+		})
+	}
+}
+
+func DeleteUser(c *gin.Context) {
+	res, _ := c.Get("UserEmail")
+	if !model.CheckAdmin(res.(string)) {
+		code := e.CODE.AuthAccessError
+		c.JSON(http.StatusOK, gin.H{
+			"code": code,
+			"msg":  e.ParseCode(code),
+			"data": nil,
+		})
+	} else {
+		code := e.CODE.Success
+		email := c.Query("email")
+		if err := model.DeleteUser(email); err != nil {
+			code = e.CODE.DataBaseError
+		}
+		c.JSON(http.StatusOK, gin.H{
+			"code": code,
+			"msg":  e.ParseCode(code),
+			"data": nil,
 		})
 	}
 }

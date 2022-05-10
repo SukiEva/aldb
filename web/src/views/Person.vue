@@ -1,5 +1,6 @@
 <template>
-  <div>
+  <Header :user-name="userInfo.name"/>
+  <el-main>
     <el-row>
       <el-col :span="6">
         <div class="fl-left avatar-box">
@@ -99,19 +100,32 @@
         </div>
       </template>
     </el-dialog>
-  </div>
+  </el-main>
 </template>
 
 <script lang="ts" setup>
-import {changePassword} from "~/api/user"
+import {changePassword, getUser} from "~/api/user"
+import {useRouter} from "vue-router";
 
-const props = defineProps(['userInfo'])
+const router = useRouter()
+const userEmail = sessionStorage.getItem("UserEmail") as string
+if (userEmail == null) {
+  ElMessage.error("未登录")
+  router.push({name: "Login"})
+}
+const userInfo = ref({})
 const role = ref('普通用户')
 const perm = ref(false)
-if (props.userInfo.access != 0) {
-  role.value = '系统管理员'
-  perm.value = true
+const fetchUser = () => {
+  getUser(userEmail).then((res) => {
+    userInfo.value = res.data
+    if (res.data.access != 0) {
+      role.value = '系统管理员'
+      perm.value = true
+    }
+  })
 }
+fetchUser()
 const activeName = ref('control')
 // 用户管理
 const rules = reactive({
@@ -152,7 +166,7 @@ const formCancel = () => {
   pwdModify.confirmPassword = "";
 }
 const formSubmit = () => {
-  pwdModify.email = props.userInfo.email
+  pwdModify.email = userEmail
   if (pwdModify.password == "" || pwdModify.newPassword == "" || pwdModify.confirmPassword == "") {
     ElMessage.warning("请补充完整信息")
     return
@@ -169,5 +183,5 @@ const formSubmit = () => {
 </script>
 
 <style lang="scss">
-@import "../styles/person.scss";
+@import "../styles/person";
 </style>

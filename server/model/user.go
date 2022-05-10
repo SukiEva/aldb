@@ -19,6 +19,10 @@ func AddUser(obj Operator) error {
 	return err
 }
 
+func UpdateUser(obj Operator) error {
+	return mgo.UpsertOperator(obj.Email, obj.Name, obj.Password, obj.Access)
+}
+
 func GetUser(email string) Operator {
 	user, err := mgo.QueryOperatorByEmail(email)
 	if err != nil {
@@ -42,13 +46,16 @@ func GetUsers() []Operator {
 	for _, obj := range users {
 		res = append(res, Operator{
 			Name:     obj.Name,
-			Password: "",
+			Password: obj.Password,
 			Email:    obj.Email,
 			Access:   obj.Access,
 			CreateAt: obj.CreateAt.Format("2006-01-02"),
 		})
 	}
 	return res
+}
+func DeleteUser(email string) error {
+	return mgo.DropOperator(email)
 }
 
 func ChangePassword(email string, newPassword string) error {

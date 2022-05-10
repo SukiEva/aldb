@@ -4,13 +4,11 @@
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
-    Anno: typeof import('./components/Anno.vue')['default']
     CopyRight: typeof import('./components/CopyRight.vue')['default']
     Drawer: typeof import('./components/Drawer.vue')['default']
     ElAvatar: typeof import('element-plus/es')['ElAvatar']
     ElBacktop: typeof import('element-plus/es')['ElBacktop']
     ElButton: typeof import('element-plus/es')['ElButton']
-    ElCascader: typeof import('element-plus/es')['ElCascader']
     ElCol: typeof import('element-plus/es')['ElCol']
     ElCollapse: typeof import('element-plus/es')['ElCollapse']
     ElCollapseItem: typeof import('element-plus/es')['ElCollapseItem']
@@ -27,7 +25,6 @@ declare module '@vue/runtime-core' {
     ElInput: typeof import('element-plus/es')['ElInput']
     ElMain: typeof import('element-plus/es')['ElMain']
     ElOption: typeof import('element-plus/es')['ElOption']
-    ElPopover: typeof import('element-plus/es')['ElPopover']
     ElRow: typeof import('element-plus/es')['ElRow']
     ElSelect: typeof import('element-plus/es')['ElSelect']
     ElSpace: typeof import('element-plus/es')['ElSpace']
@@ -45,11 +42,10 @@ declare module '@vue/runtime-core' {
     IEpUploadFilled: typeof import('~icons/ep/upload-filled')['default']
     IEpUser: typeof import('~icons/ep/user')['default']
     Main: typeof import('./components/Main.vue')['default']
-    Person: typeof import('./components/Person.vue')['default']
+    Person: typeof import('./views/Person.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     Upload: typeof import('./components/Upload.vue')['default']
-    User: typeof import('./components/User.vue')['default']
   }
 }
 

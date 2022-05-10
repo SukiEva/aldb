@@ -38,6 +38,10 @@ func (m *Mgo) InsertOperator(obj *Operator) error {
 	return err
 }
 
+func (m *Mgo) UpsertOperator(email, name, password string, access int) error {
+	return operator.UpdateOne(ctx, bson.M{"email": email}, bson.M{"$set": bson.M{"name": name, "password": password, "access": access}})
+}
+
 func (m *Mgo) ExistsOperator(email string) bool {
 	var one Operator
 	if err := operator.Find(ctx, bson.M{"email": email}).One(&one); err != nil {
@@ -52,4 +56,8 @@ func (m *Mgo) UpdateOperator(id primitive.ObjectID, annotations []primitive.Obje
 
 func (m *Mgo) UpdatePassword(email string, newPassword string) error {
 	return operator.UpdateOne(ctx, bson.M{"email": email}, bson.M{"$set": bson.M{"password": newPassword}})
+}
+
+func (m *Mgo) DropOperator(email string) error {
+	return operator.Remove(ctx, bson.M{"email": email})
 }

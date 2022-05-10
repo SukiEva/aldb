@@ -12,6 +12,11 @@ const routes = [
         component: () => import('../views/Login.vue'),
     },
     {
+        path: "/user",
+        name: "User",
+        component: () => import('../views/Person.vue'),
+    },
+    {
         path: '/:catchAll(.*)',
         name: '404',
         component: () => import('../views/404.vue')

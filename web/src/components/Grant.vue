@@ -16,8 +16,8 @@
         </el-table-column>
         <el-table-column label="操作" min-width="250" fixed="right">
           <template #default="scope">
-            <el-button type="primary" :icon="Edit" circle @click="editUser(scope.row)"/>
-            <el-button type="danger" :icon="Delete" circle @click="deleteUser(scope.row)"/>
+            <el-button type="primary" :icon="Edit" circle @click="editButton(scope.row)"/>
+            <el-button type="danger" :icon="Delete" circle @click="deleteButton(scope.row)"/>
           </template>
         </el-table-column>
       </el-table>
@@ -33,7 +33,7 @@
           <el-input v-model="userInfo.name"/>
         </el-form-item>
         <el-form-item label="密码" prop="password">
-          <el-input v-model="userInfo.password"/>
+          <el-input v-model="userInfo.password" type="password"/>
         </el-form-item>
         <el-form-item label="邮箱" prop="email">
           <el-input v-model="userInfo.email" disabled/>
@@ -48,7 +48,7 @@
       <template #footer>
         <div class="dialog-footer">
           <el-button @click="userDialog = false">取消</el-button>
-          <el-button type="primary" @click="enterAddUserDialog">确定</el-button>
+          <el-button type="primary" @click="editSubmit">确定</el-button>
         </div>
       </template>
     </el-dialog>
@@ -57,7 +57,7 @@
 
 <script lang="ts" setup>
 import {Delete, Edit} from '@element-plus/icons-vue'
-import {getUsers} from "~/api/user";
+import {deleteUser, getUsers, updateUser} from "~/api/user";
 import {ElMessageBox} from "element-plus";
 
 // 获取用户信息
@@ -80,15 +80,27 @@ const userInfo = reactive({
   email: '',
   access: 0,
 })
-const editUser = (user: any) => {
+const editButton = (user: any) => {
   userInfo.name = user.name;
   userInfo.password = user.password;
   userInfo.email = user.email
   userRole.value = '用户'
   userDialog.value = true;
 }
+const editSubmit = () => {
+  if (userRole.value == '用户') userInfo.access = 0
+  else userInfo.access = 1
+  updateUser(userInfo).then((res) => {
+    if (res.code != 200) {
+      return
+    }
+    ElMessage.success("修改成功")
+    userDialog.value = false
+    fetchUsers()
+  })
+}
 // 删除
-const deleteUser = (user: any) => {
+const deleteButton = (user: any) => {
   ElMessageBox.confirm(
       '确定删除此用户？',
       '删除 ' + user.name,
@@ -99,16 +111,15 @@ const deleteUser = (user: any) => {
       }
   )
       .then(() => {
-        ElMessage({
-          type: 'success',
-          message: '删除完成',
+        deleteUser(user.email).then((res) => {
+          if (res.code == 200)
+            ElMessage.success("删除成功")
+          else ElMessage.error("删除失败")
+          fetchUsers()
         })
       })
       .catch(() => {
-        ElMessage({
-          type: 'info',
-          message: '删除取消',
-        })
+        ElMessage.info("删除撤销")
       })
 }
 </script>
