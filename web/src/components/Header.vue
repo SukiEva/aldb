@@ -1,6 +1,8 @@
 <template>
   <el-header class="header">
-    <div class="logo">数据标注存储系统</div>
+    <router-link to="/">
+      <div class="logo">数据标注存储系统</div>
+    </router-link>
     <!-- <el-input
         v-model="input"
         placeholder="Please input"

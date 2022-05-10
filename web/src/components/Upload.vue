@@ -1,8 +1,5 @@
 <template>
-  <el-button round @click="dialogFormVisible = true">
-    添加
-    <i-ep-upload/>
-  </el-button>
+  <el-button circle @click="dialogFormVisible = true" :icon="Upload" plain/>
   <el-dialog v-model="dialogFormVisible" title="藻类图像上传" width="30%" destroy-on-close>
     <el-form :model="form">
       <el-form-item label="名称">
@@ -68,7 +65,7 @@
 <script lang="ts" setup>
 import {addAlga, addRiver, getRivers} from "~/api/algae";
 import type {UploadFile, UploadFiles, UploadProps} from 'element-plus'
-import {Plus} from '@element-plus/icons-vue'
+import {Plus, Upload} from '@element-plus/icons-vue'
 
 // 添加图像
 const dialogFormVisible = ref(false);
@@ -99,7 +96,7 @@ const formSubmit = () => {
 }
 // 上传图片
 const disabled = ref(false)
-const uploadUrl = import.meta.env.VITE_APP_BASE_API + "/api/upload"
+const uploadUrl = import.meta.env.VITE_APP_BASE_API + "/upload"
 const afterUpload: UploadProps['onSuccess'] = (response: any, uploadFile: UploadFile, uploadFiles: UploadFiles) => {
   if (response.code != 200) {
     ElMessage.error("上传失败")

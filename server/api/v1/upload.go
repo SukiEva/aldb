@@ -10,7 +10,6 @@ import (
 func Upload(c *gin.Context) {
 	code := e.CODE.Success
 	data := make(map[string]interface{})
-
 	_, header, err := c.Request.FormFile("file")
 	if err != nil {
 		code = e.CODE.FileReceiveError

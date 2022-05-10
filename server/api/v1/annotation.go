@@ -19,6 +19,17 @@ func GetAnnotationByAlga(c *gin.Context) {
 	})
 }
 
+func GetAnnotationByUser(c *gin.Context) {
+	code := e.CODE.Success
+	user := c.Query("user")
+	res := model.GetAnnotationByUser(user)
+	c.JSON(http.StatusOK, gin.H{
+		"code": code,
+		"msg":  e.ParseCode(code),
+		"data": res,
+	})
+}
+
 func AddAnnotation(c *gin.Context) {
 	code := e.CODE.Success
 	data := make(map[string]interface{})

@@ -38,7 +38,9 @@
             <el-tab-pane v-if="perm" label="用户管理" name="control">
               <Grant/>
             </el-tab-pane>
-            <el-tab-pane v-else label="标注管理" name="control"></el-tab-pane>
+            <el-tab-pane v-else label="标注管理" name="control">
+              <Anno :user-email="userEmail"/>
+            </el-tab-pane>
             <el-tab-pane label="账号管理" name="info">
               <ul>
                 <li>
@@ -106,6 +108,7 @@
 <script lang="ts" setup>
 import {changePassword, getUser} from "~/api/user"
 import {useRouter} from "vue-router";
+import Anno from "~/components/Anno.vue";
 
 const router = useRouter()
 const userEmail = sessionStorage.getItem("UserEmail") as string

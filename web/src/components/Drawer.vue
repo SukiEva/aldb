@@ -103,7 +103,7 @@ const cancelForm = () => {
   emit('update', false)
 }
 // 上传文件
-const uploadUrl = import.meta.env.VITE_APP_BASE_API + "/api/upload"
+const uploadUrl = import.meta.env.VITE_APP_BASE_API + "/upload"
 const afterUpload: UploadProps['onSuccess'] = (response: any, uploadFile: UploadFile, uploadFiles: UploadFiles) => {
   if (response.code != 200) {
     ElMessage.error("上传失败")

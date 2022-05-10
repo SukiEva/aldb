@@ -17,6 +17,7 @@ type Annotation struct {
 	Url         string `json:"url" binding:"required"`
 	CreateAt    string `json:"createAt" binding:"-"`
 	UpdateAt    string `json:"updateAt" binding:"-"`
+	Id          string `json:"id" binding:"-"`
 }
 
 type Operator struct {

@@ -14,12 +14,12 @@ func InitRouter() *gin.Engine {
 	r.GET("captcha", v1.GetCaptcha)
 	r.POST("auth", v1.GetAuth)
 	r.POST("register", v1.AddUser)
+	r.POST("upload", v1.Upload)
 	// api
 	api := r.Group("api")
 	api.Use(middleware.JWTAuthMiddleware())
 	{
 		api.GET("data", v1.GetData)
-		api.POST("upload", v1.Upload)
 	}
 	// api/alga
 	algae := api.Group("alga")
@@ -36,6 +36,7 @@ func InitRouter() *gin.Engine {
 	user := api.Group("user")
 	{
 		user.GET("info", v1.GetUser)
+		user.GET("anno", v1.GetAnnotationByUser)
 		user.GET("all", v1.GetUsers)
 		user.GET("delete", v1.DeleteUser)
 		user.POST("pwd", v1.ChangePassword)

@@ -24,6 +24,26 @@ func GetAnnotationByAlga(algaName string) []Annotation {
 	return res
 }
 
+func GetAnnotationByUser(userEmail string) []Annotation {
+	res := make([]Annotation, 0)
+	user, err := mgo.QueryOperatorByEmail(userEmail)
+	if err != nil {
+		return res
+	}
+	for _, obj := range user.Annotations {
+		anno := mgo.QueryAnnotationById(obj)
+		res = append(res, Annotation{
+			Description: anno.Description,
+			Format:      anno.Format,
+			Url:         anno.Url,
+			CreateAt:    anno.CreateAt.Format("2006-01-02 15:04"),
+			UpdateAt:    anno.UpdateAt.Format("2006-01-02 15:04"),
+			Id:          anno.Id.String(),
+		})
+	}
+	return res
+}
+
 func AddAnnotation(obj Anno) (interface{}, error) {
 	return mgo.InsertAnnotation(&database.Annotation{
 		Description: obj.Description,

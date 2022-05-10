@@ -31,6 +31,13 @@ export const updateUser = (data: object) => {
     });
 };
 
+export const getAnno = (query: string) => {
+    return http.request({
+        url: "/api/user/anno?user=" + query,
+        method: "get"
+    });
+};
+
 export const deleteUser = (query: string) => {
     return http.request({
         url: "/api/user/delete?email=" + query,

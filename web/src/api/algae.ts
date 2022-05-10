@@ -31,6 +31,13 @@ export const addAnno = (data: object) => {
     });
 };
 
+export const deleteAnno = (query: string) => {
+    return http.request({
+        url: "/api/alga/anno?id=" + query,
+        method: "get",
+    });
+};
+
 
 export const addRiver = (data: object) => {
     return http.request({
