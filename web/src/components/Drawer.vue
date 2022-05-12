@@ -1,16 +1,10 @@
 <template>
-  <el-drawer
-      :model-value="drawer"
-      :title="alga.name"
-      size="50%"
-      :before-close="handleClose"
-      destroy-on-close
-  >
+  <el-drawer :model-value="drawer" :title="alga.name" size="50%" :before-close="handleClose" destroy-on-close>
     <el-table :data="gridData">
-      <el-table-column property="createAt" label="创建时间"/>
-      <el-table-column property="updateAt" label="修改时间"/>
-      <el-table-column property="description" label="描述"/>
-      <el-table-column property="format" label="格式"/>
+      <el-table-column property="createAt" label="创建时间" />
+      <el-table-column property="updateAt" label="修改时间" />
+      <el-table-column property="description" label="描述" />
+      <el-table-column property="format" label="格式" />
       <el-table-column label="操作">
         <template #default="scope">
           <el-button size="small" type="success" @click="download(scope.row.url)">下载
@@ -26,27 +20,17 @@
         </template>
         <el-form :model="form">
           <el-form-item label="描述">
-            <el-input v-model="form.description" autosize type="textarea" clearable placeholder="请输入标注描述"/>
+            <el-input v-model="form.description" autosize type="textarea" clearable placeholder="请输入标注描述" />
           </el-form-item>
           <el-form-item label="格式">
             <el-select v-model="form.format">
-              <el-option
-                  v-for="item in formats"
-                  :key="item"
-                  :label="item"
-                  :value="item"
-              />
+              <el-option v-for="item in formats" :key="item" :label="item" :value="item" />
             </el-select>
           </el-form-item>
           <el-form-item label="上传标注">
-            <el-upload
-                drag
-                :action="uploadUrl"
-                multiple
-                :on-success="afterUpload"
-            >
+            <el-upload drag :action="uploadUrl" multiple :on-success="afterUpload">
               <el-icon class="el-icon--upload">
-                <i-ep-upload-filled/>
+                <i-ep-upload-filled />
               </el-icon>
               <div class="el-upload__text">
                 Drop file here or <em>click to upload</em>
@@ -62,8 +46,8 @@
 </template>
 
 <script lang="ts" setup>
-import {addAnno} from "~/api/algae";
-import {UploadFile, UploadFiles, UploadProps} from "element-plus/es";
+import { addAnno } from "~/api/algae"
+import { UploadFile, UploadFiles, UploadProps } from "element-plus/es"
 
 const props = defineProps(['alga', 'drawer', 'user', 'gridData'])
 const emit = defineEmits(['update'])

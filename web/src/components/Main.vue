@@ -1,52 +1,46 @@
 <template>
 
   <div class="flex-auto overflow-y-auto">
-    <Waterfall
-        :list="list"
-        :row-key="options.rowKey"
-        :gutter="options.gutter"
-        :has-around-gutter="options.hasAroundGutter"
-        :width="options.width"
-        :breakpoints="options.breakpoints"
-        :img-selector="options.imgSelector"
-        :background-color="options.backgroundColor"
-        :animation-effect="options.animationEffect"
-        :animation-duration="options.animationDuration"
-        :animation-delay="options.animationDelay"
-        :lazyload="options.lazyload"
-        :load-props="options.loadProps"
-    >
+    <Waterfall :list="list" :row-key="options.rowKey" :gutter="options.gutter"
+      :has-around-gutter="options.hasAroundGutter" :width="options.width" :breakpoints="options.breakpoints"
+      :img-selector="options.imgSelector" :background-color="options.backgroundColor"
+      :animation-effect="options.animationEffect" :animation-duration="options.animationDuration"
+      :animation-delay="options.animationDelay" :lazyload="options.lazyload" :load-props="options.loadProps">
       <template #item="{ item, url, index }">
-        <div class="bg-gray-900 rounded-lg shadow-md overflow-hidden transition-all duration-300 ease-linear hover:shadow-lg hover:shadow-gray-600 group">
+        <div
+          class="bg-gray-900 rounded-lg shadow-md overflow-hidden transition-all duration-300 ease-linear hover:shadow-lg hover:shadow-gray-600 group">
           <div class="overflow-hidden">
-            <LazyImg :url="url" class="cursor-pointer transition-all duration-300 ease-linear group-hover:scale-105" @click="handlePreview(item)"/>
+            <LazyImg :url="url" class="cursor-pointer transition-all duration-300 ease-linear group-hover:scale-105"
+              @click="handlePreview(item)" />
           </div>
           <div class="px-4 pt-2 pb-4 flex justify-between items-center border-t border-t-gray-800">
             <h2 class="pb-4 text-gray-50 group-hover:text-yellow-500">
               {{ item.name }}
             </h2>
-            <button class="px-3 h-7 rounded-full bg-red-500 text-sm text-white shadow-lg transition-all duration-300 hover:bg-red-600" @click.stop="showDrawer(item)">
+            <button
+              class="px-3 h-7 rounded-full bg-red-500 text-sm text-white shadow-lg transition-all duration-300 hover:bg-red-600"
+              @click.stop="showDrawer(item)">
               标注
             </button>
           </div>
         </div>
       </template>
     </Waterfall>
-    <Drawer :alga="alga" :drawer="drawer" :user="userEmail" :grid-data="gridData" @update="closeDrawer"/>
+    <Drawer :alga="alga" :drawer="drawer" :user="userEmail" :grid-data="gridData" @update="closeDrawer" />
     <!-- 大图预览 -->
     <el-dialog v-model="previewVisible" :title="previewData.title" width="500px" center draggable>
-      <img style="width:100%" :src="previewData.url"/>
+      <img style="width:100%" :src="previewData.url" />
     </el-dialog>
   </div>
-  <el-backtop/>
+  <el-backtop />
 </template>
 
 <script lang="ts" setup>
-import {LazyImg, Waterfall} from "vue-waterfall-plugin-next";
-import "vue-waterfall-plugin-next/style.css";
-import loading from "~/assets/loading.png";
-import error from "~/assets/error.png";
-import {getAnno, getData} from "~/api/algae";
+import { LazyImg, Waterfall } from "vue-waterfall-plugin-next"
+import "vue-waterfall-plugin-next/style.css"
+import loading from "~/assets/loading.png"
+import error from "~/assets/error.png"
+import { getAnno, getData } from "~/api/algae"
 
 const props = defineProps(['userEmail'])
 
@@ -116,11 +110,11 @@ function usePreview() {
   }
 }
 
-const {previewVisible, previewData, handlePreview} = usePreview()
+const { previewVisible, previewData, handlePreview } = usePreview()
 
-const options = useWaterfall();
+const options = useWaterfall()
 // 数据获取
-const list = ref([]);
+const list = ref([])
 const fetchData = () => {
   getData({}).then((res) => {
     list.value = res.data;
@@ -134,7 +128,7 @@ const drawer = ref(false)
 const gridData = ref([])
 const fetchAnno = (item: any) => {
   getAnno(item.name).then((res) => {
-    gridData.value = res.data;
+    gridData.value = res.data
   });
 };
 const showDrawer = (item: any) => {

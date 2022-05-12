@@ -1,5 +1,5 @@
 <template>
-  <Header :user-name="userInfo.name"/>
+  <Header :user-name="userInfo.name" />
   <el-main>
     <el-row>
       <el-col :span="6">
@@ -13,17 +13,12 @@
             <div class="user-information">
               <ul>
                 <li>
-                  <i-ep-user/>
+                  <i-ep-user />
                   {{ role }}
                 </li>
-                <el-tooltip
-                    class="item"
-                    effect="light"
-                    :content="userInfo.createAt"
-                    placement="bottom"
-                >
+                <el-tooltip class="item" effect="light" :content="userInfo.createAt" placement="bottom">
                   <li>
-                    <i-ep-timer/>
+                    <i-ep-timer />
                     注册时间
                   </li>
                 </el-tooltip>
@@ -36,10 +31,10 @@
         <div class="user-addcount">
           <el-tabs v-model="activeName">
             <el-tab-pane v-if="perm" label="用户管理" name="control">
-              <Grant/>
+              <Grant />
             </el-tab-pane>
             <el-tab-pane v-else label="标注管理" name="control">
-              <Anno :user-email="userEmail"/>
+              <Anno :user-email="userEmail" />
             </el-tab-pane>
             <el-tab-pane label="账号管理" name="info">
               <ul>
@@ -53,10 +48,7 @@
                   <p class="title">修改密码</p>
                   <p class="desc">
                     修改个人密码
-                    <a
-                        href="javascript:void(0)"
-                        @click="showPassword = true"
-                    >修改密码</a>
+                    <a href="javascript:void(0)" @click="showPassword = true">修改密码</a>
                   </p>
                 </li>
               </ul>
@@ -65,39 +57,23 @@
         </div>
       </el-col>
     </el-row>
-    <el-dialog
-        v-model="showPassword"
-        title="修改密码"
-        width="360px"
-        @close=""
-    >
-      <el-form
-          :model="pwdModify"
-          label-width="80px"
-          :rules="rules"
-      >
+    <el-dialog v-model="showPassword" title="修改密码" width="360px" @close="">
+      <el-form :model="pwdModify" label-width="80px" :rules="rules">
         <el-form-item :minlength="5" label="原密码" prop="password">
-          <el-input v-model="pwdModify.password" show-password/>
+          <el-input v-model="pwdModify.password" show-password />
         </el-form-item>
         <el-form-item :minlength="5" label="新密码" prop="newPassword">
-          <el-input v-model="pwdModify.newPassword" show-password/>
+          <el-input v-model="pwdModify.newPassword" show-password />
         </el-form-item>
         <el-form-item :minlength="5" label="确认密码" prop="confirmPassword">
-          <el-input v-model="pwdModify.confirmPassword" show-password/>
+          <el-input v-model="pwdModify.confirmPassword" show-password />
         </el-form-item>
       </el-form>
       <template #footer>
         <div class="dialog-footer">
-          <el-button
-              size="small"
-              @click="formCancel"
-          >取 消
+          <el-button size="small" @click="formCancel">取 消
           </el-button>
-          <el-button
-              size="small"
-              type="primary"
-              @click="formSubmit"
-          >确 定
+          <el-button size="small" type="primary" @click="formSubmit">确 定
           </el-button>
         </div>
       </template>
@@ -106,15 +82,15 @@
 </template>
 
 <script lang="ts" setup>
-import {changePassword, getUser} from "~/api/user"
-import {useRouter} from "vue-router";
-import Anno from "~/components/Anno.vue";
+import { changePassword, getUser } from "~/api/user"
+import { useRouter } from "vue-router"
+import Anno from "~/components/Anno.vue"
 
 const router = useRouter()
 const userEmail = sessionStorage.getItem("UserEmail") as string
 if (userEmail == null) {
   ElMessage.error("未登录")
-  router.push({name: "Login"})
+  router.push({ name: "Login" })
 }
 const userInfo = ref({})
 const role = ref('普通用户')
@@ -133,16 +109,16 @@ const activeName = ref('control')
 // 用户管理
 const rules = reactive({
   password: [
-    {required: true, message: '请输入密码', trigger: 'blur'},
-    {min: 5, message: '最少5个字符', trigger: 'blur'},
+    { required: true, message: '请输入密码', trigger: 'blur' },
+    { min: 5, message: '最少5个字符', trigger: 'blur' },
   ],
   newPassword: [
-    {required: true, message: '请输入新密码', trigger: 'blur'},
-    {min: 5, message: '最少5个字符', trigger: 'blur'},
+    { required: true, message: '请输入新密码', trigger: 'blur' },
+    { min: 5, message: '最少5个字符', trigger: 'blur' },
   ],
   confirmPassword: [
-    {required: true, message: '请输入确认密码', trigger: 'blur'},
-    {min: 5, message: '最少5个字符', trigger: 'blur'},
+    { required: true, message: '请输入确认密码', trigger: 'blur' },
+    { min: 5, message: '最少5个字符', trigger: 'blur' },
     {
       validator: (rule: any, value: string, callback: any) => {
         if (value !== pwdModify.newPassword) {
@@ -163,10 +139,10 @@ const pwdModify = reactive({
   confirmPassword: "",
 })
 const formCancel = () => {
-  showPassword.value = false;
-  pwdModify.password = "";
-  pwdModify.newPassword = "";
-  pwdModify.confirmPassword = "";
+  showPassword.value = false
+  pwdModify.password = ""
+  pwdModify.newPassword = ""
+  pwdModify.confirmPassword = ""
 }
 const formSubmit = () => {
   pwdModify.email = userEmail

@@ -13,25 +13,17 @@
 
     <div class="header-right">
       <div class="header-user-con">
-        <Upload/>
-        <el-dropdown
-            class="user-name"
-            trigger="click"
-            @command="handleCommand"
-        >
-                    <span class="el-dropdown-link">
-                        <el-avatar> {{ userName }} </el-avatar>
-                    </span>
+        <Upload />
+        <el-dropdown class="user-name" trigger="click" @command="handleCommand">
+          <span class="el-dropdown-link">
+            <el-avatar> {{ userName }} </el-avatar>
+          </span>
           <template #dropdown>
             <el-dropdown-menu>
-              <el-dropdown-item command="user"
-              >个人中心
-              </el-dropdown-item
-              >
-              <el-dropdown-item divided command="out"
-              >退出登录
-              </el-dropdown-item
-              >
+              <el-dropdown-item command="user">个人中心
+              </el-dropdown-item>
+              <el-dropdown-item divided command="out">退出登录
+              </el-dropdown-item>
             </el-dropdown-menu>
           </template>
         </el-dropdown>
@@ -41,17 +33,17 @@
 </template>
 
 <script lang="ts" setup>
-import {useRouter} from "vue-router";
+import { useRouter } from "vue-router"
 
-const router = useRouter();
+const router = useRouter()
 const props = defineProps(['userName'])
 
 const handleCommand = (command: string | number | object) => {
   if (command == "out") {
     sessionStorage.clear()
-    router.push({name: "Login"})
+    router.push({ name: "Login" })
   } else if (command == "user") {
-    router.push({name: "User"})
+    router.push({ name: "User" })
   }
 }
 </script>

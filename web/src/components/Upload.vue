@@ -1,86 +1,72 @@
 <template>
-  <el-button circle @click="dialogFormVisible = true" :icon="Upload" plain/>
+  <el-button circle @click="dialogFormVisible = true" :icon="Upload" plain />
   <el-dialog v-model="dialogFormVisible" title="藻类图像上传" width="30%" destroy-on-close>
     <el-form :model="form">
       <el-form-item label="名称">
-        <el-input v-model="form.name"/>
+        <el-input v-model="form.name" />
       </el-form-item>
       <el-form-item label="所属河流">
-        <el-space
-        >
+        <el-space>
           <el-select v-model="form.river" placeholder="选择河流">
-            <el-option
-                v-for="item in rivers"
-                :key="item.name"
-                :label="item.name"
-                :value="item.name"
-            />
+            <el-option v-for="item in rivers" :key="item.name" :label="item.name" :value="item.name" />
           </el-select>
-          <el-button
-              type="primary"
-              size="small"
-              @click="riverFormVisible = true"
-          >添加
-          </el-button
-          >
-        </el-space
-        >
+          <el-button type="primary" size="small" @click="riverFormVisible = true">添加
+          </el-button>
+        </el-space>
       </el-form-item>
       <el-form-item label="图像">
         <el-upload drag :action="uploadUrl" class="avatar-uploader" :show-file-list="false" :on-success="afterUpload">
-          <img v-if="form.src" :src="form.src" class="avatar"/>
+          <img v-if="form.src" :src="form.src" class="avatar" />
           <el-icon v-else class="avatar-uploader-icon">
-            <Plus/>
+            <Plus />
           </el-icon>
         </el-upload>
       </el-form-item>
     </el-form>
     <template #footer>
-            <span class="dialog-footer">
-                <el-button @click="formCancel">取消</el-button>
-                <el-button type="primary" @click="formSubmit">确认</el-button>
-            </span>
+      <span class="dialog-footer">
+        <el-button @click="formCancel">取消</el-button>
+        <el-button type="primary" @click="formSubmit">确认</el-button>
+      </span>
     </template>
   </el-dialog>
   <el-dialog v-model="riverFormVisible" title="添加河流" width="30%" center destroy-on-close>
     <el-form :model="river">
       <el-form-item label="名称">
-        <el-input v-model="river.name"/>
+        <el-input v-model="river.name" />
       </el-form-item>
       <el-form-item label="位置">
-        <el-input v-model="river.address"/>
+        <el-input v-model="river.address" />
       </el-form-item>
     </el-form>
     <template #footer>
-            <span class="dialog-footer">
-                <el-button @click="riverFormCancel">取消</el-button>
-                <el-button type="primary" @click="riverFormSubmit"
-                >添加</el-button
-                >
-            </span>
+      <span class="dialog-footer">
+        <el-button @click="riverFormCancel">取消</el-button>
+        <el-button type="primary" @click="riverFormSubmit">添加</el-button>
+      </span>
     </template>
   </el-dialog>
 </template>
 
 <script lang="ts" setup>
-import {addAlga, addRiver, getRivers} from "~/api/algae";
-import type {UploadFile, UploadFiles, UploadProps} from 'element-plus'
-import {Plus, Upload} from '@element-plus/icons-vue'
+import { addAlga, addRiver, getRivers } from "~/api/algae"
+import type { UploadFile, UploadFiles, UploadProps } from 'element-plus'
+import { Plus, Upload } from '@element-plus/icons-vue'
 
 // 添加图像
-const dialogFormVisible = ref(false);
+const dialogFormVisible = ref(false)
 const form = reactive({
   name: "",
   src: "",
   river: "",
 });
 const clearForm = () => {
-  form.name = "";
-  form.src = "";
-  form.river = "";
+  form.name = ""
+  form.src = ""
+  form.river = ""
 };
 const formCancel = () => {
-  dialogFormVisible.value = false;
+  dialogFormVisible.value = false
   clearForm();
 };
 const formSubmit = () => {
@@ -91,7 +77,7 @@ const formSubmit = () => {
     }
     ElMessage.success("上传成功")
     formCancel()
-    location.reload();
+    location.reload()
   })
 }
 // 上传图片
@@ -105,7 +91,7 @@ const afterUpload: UploadProps['onSuccess'] = (response: any, uploadFile: Upload
   form.src = response.data.url
 }
 // 获取河流
-const rivers = ref([]);
+const rivers = ref([])
 const fetchRivers = () => {
   getRivers({}).then((res) => {
     rivers.value = res.data;
@@ -117,7 +103,7 @@ const river = reactive({
   name: "",
   address: "",
 });
-const riverFormVisible = ref(false);
+const riverFormVisible = ref(false)
 const riverFormSubmit = () => {
   if (river.name == "" || river.address == "") {
     ElMessage.warning("请填写完整信息")
@@ -131,13 +117,13 @@ const riverFormSubmit = () => {
 
     ElMessage.success("添加河流成功")
     fetchRivers();
-    riverFormVisible.value = false;
+    riverFormVisible.value = false
   });
 };
 const riverFormCancel = () => {
-  river.name = "";
-  river.address = "";
-  riverFormVisible.value = false;
+  river.name = ""
+  river.address = ""
+  riverFormVisible.value = false
 };
 </script>
 

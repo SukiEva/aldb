@@ -2,7 +2,7 @@
   <div>
     <div class="big">
       <div class="inner">
-        <img src="../assets/notFound.png" alt="not"/>
+        <img src="../assets/notFound.png" alt="not" />
         <p>页面被神秘力量吸走了</p>
         <p>↓</p>
         <el-space class="leftPic">
@@ -16,15 +16,15 @@
   </div>
 </template>
 
-<script>
-import {useRouter} from "vue-router";
+<script lang="ts">
+import { useRouter } from "vue-router"
 
 export default {
   name: "404",
   setup() {
-    const router = useRouter();
+    const router = useRouter()
     const goBack = () => {
-      router.go(-1);
+      router.go(-1)
     };
     return {
       goBack,
@@ -55,7 +55,7 @@ export default {
 }
 
 .inner .leftPic {
-  display:flex;
-  justify-content:center;
+  display: flex;
+  justify-content: center;
 }
 </style>

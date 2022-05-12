@@ -19,12 +19,15 @@
     color: #888;
     height: 30px;
     line-height: 12px;
+
     a {
         color: #888;
     }
+
     div {
         display: flex;
         justify-content: center;
+
         span {
             margin: 0 3px;
         }
