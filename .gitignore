@@ -16,6 +16,4 @@
 # vendor/
 .idea
 bin
-cmd
 app.log
-server/config/config.json

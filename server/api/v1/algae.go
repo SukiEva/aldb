@@ -8,7 +8,14 @@ import (
 	"net/http"
 )
 
-// GetData 获取所有数据
+// GetData
+// @Summary GetData
+// @Description 获取所有藻类数据
+// @Tags aldb
+// @Accept json
+// @Produce json
+// @Success 200 {object} object "{code, msg, data}"
+// @Router /data [get]
 func GetData(c *gin.Context) {
 	code := e.CODE.Success
 	res := model.GetData()
@@ -19,7 +26,14 @@ func GetData(c *gin.Context) {
 	})
 }
 
-// AddAlga 添加藻类图像
+// AddAlga
+// @Summary AddAlga
+// @Description 添加藻类图片数据
+// @Tags aldb
+// @Accept json
+// @Produce json
+// @Success 200 {object} object "{code, msg, data}"
+// @Router /alga/add [post]
 func AddAlga(c *gin.Context) {
 	code := e.CODE.Success
 	data := make(map[string]interface{})
@@ -46,7 +60,14 @@ func AddAlga(c *gin.Context) {
 	})
 }
 
-// AddRiver 添加河流
+// AddRiver
+// @Summary AddRiver
+// @Description 添加河流数据
+// @Tags aldb
+// @Accept json
+// @Produce json
+// @Success 200 {object} object "{code, msg, data}"
+// @Router /river/add [post]
 func AddRiver(c *gin.Context) {
 	code := e.CODE.Success
 	data := make(map[string]interface{})
@@ -65,7 +86,14 @@ func AddRiver(c *gin.Context) {
 	})
 }
 
-// GetRivers 获取所有河流
+// GetRivers
+// @Summary GetRivers
+// @Description 获取所有河流数据
+// @Tags aldb
+// @Accept json
+// @Produce json
+// @Success 200 {object} object "{code, msg, data}"
+// @Router /river/all [get]
 func GetRivers(c *gin.Context) {
 	code := e.CODE.Success
 	res := model.GetRivers()

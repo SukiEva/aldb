@@ -25,6 +25,14 @@ func AddUser(c *gin.Context) {
 	})
 }
 
+// UpdateUser
+// @Summary UpdateUser
+// @Description 修改用户信息
+// @Tags aldb
+// @Accept json
+// @Produce json
+// @Success 200 {object} object "{code, msg, data}"
+// @Router /user/update [post]
 func UpdateUser(c *gin.Context) {
 	code := e.CODE.Success
 	data := make(map[string]interface{})
@@ -43,6 +51,15 @@ func UpdateUser(c *gin.Context) {
 	})
 }
 
+// GetUser
+// @Summary GetUser
+// @Description 获取用户信息
+// @Tags aldb
+// @Accept json
+// @Produce json
+// @Param email query string true "用户邮箱"
+// @Success 200 {object} object "{code, msg, data}"
+// @Router /user/info [get]
 func GetUser(c *gin.Context) {
 	code := e.CODE.Success
 	email := c.Query("email")
@@ -54,6 +71,14 @@ func GetUser(c *gin.Context) {
 	})
 }
 
+// GetUsers
+// @Summary GetUsers
+// @Description 获取所有用户信息
+// @Tags aldb
+// @Accept json
+// @Produce json
+// @Success 200 {object} object "{code, msg, data}"
+// @Router /user/all [get]
 func GetUsers(c *gin.Context) {
 	res, _ := c.Get("UserEmail")
 	email := res.(string)
@@ -74,6 +99,15 @@ func GetUsers(c *gin.Context) {
 	}
 }
 
+// DeleteUser
+// @Summary DeleteUser
+// @Description 删除用户
+// @Tags aldb
+// @Accept json
+// @Produce json
+// @Param email query string true "用户邮箱"
+// @Success 200 {object} object "{code, msg, data}"
+// @Router /user/delete [get]
 func DeleteUser(c *gin.Context) {
 	res, _ := c.Get("UserEmail")
 	if !model.CheckAdmin(res.(string)) {
@@ -97,6 +131,14 @@ func DeleteUser(c *gin.Context) {
 	}
 }
 
+// ChangePassword
+// @Summary ChangePassword
+// @Description 修改用户密码
+// @Tags aldb
+// @Accept json
+// @Produce json
+// @Success 200 {object} object "{code, msg, data}"
+// @Router /user/pwd [post]
 func ChangePassword(c *gin.Context) {
 	code := e.CODE.Success
 	data := make(map[string]interface{})
