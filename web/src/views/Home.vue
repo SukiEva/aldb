@@ -1,5 +1,5 @@
 <template>
-  <Header :user-name="userName" />
+  <Header :user-name="userName" :display="true"/>
   <el-main>
     <Main :user-email="userEmail" />
   </el-main>

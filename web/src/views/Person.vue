@@ -1,5 +1,5 @@
 <template>
-  <Header :user-name="userInfo.name" />
+  <Header :user-name="userInfo.name" :display="false"/>
   <el-main>
     <el-row>
       <el-col :span="6">

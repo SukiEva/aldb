@@ -3,13 +3,21 @@
     <router-link to="/">
       <div class="logo">数据标注存储系统</div>
     </router-link>
-    <!-- <el-input
-        v-model="input"
-        placeholder="Please input"
-        class="input"
-        size="large"
-        clearable
-    /> -->
+
+    <div v-if="display" class="input">
+      <el-input v-model="search" placeholder="请输入..." size="large" clearable>
+        <template #prepend>
+          <el-select v-model="select" placeholder="类型" style="width: 80px">
+            <el-option label="图像" value="图像" />
+            <el-option label="标注" value="标注" />
+          </el-select>
+        </template>
+        <template #append>
+          <el-button :icon="Search" />
+        </template>
+      </el-input>
+    </div>
+
 
     <div class="header-right">
       <div class="header-user-con">
@@ -34,9 +42,9 @@
 
 <script lang="ts" setup>
 import { useRouter } from "vue-router"
-
+import { Search } from '@element-plus/icons-vue'
 const router = useRouter()
-const props = defineProps(['userName'])
+const props = defineProps(['userName','display'])
 
 const handleCommand = (command: string | number | object) => {
   if (command == "out") {
@@ -46,6 +54,9 @@ const handleCommand = (command: string | number | object) => {
     router.push({ name: "User" })
   }
 }
+
+const search = ref('')
+const select = ref('')
 </script>
 
 <style scoped>
@@ -93,7 +104,4 @@ const handleCommand = (command: string | number | object) => {
   cursor: pointer;
 }
 
-.el-dropdown-menu__item {
-  text-align: center;
-}
 </style>

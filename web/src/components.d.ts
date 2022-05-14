@@ -39,7 +39,6 @@ declare module '@vue/runtime-core' {
     Header: typeof import('./components/Header.vue')['default']
     IEpLock: typeof import('~icons/ep/lock')['default']
     IEpTimer: typeof import('~icons/ep/timer')['default']
-    IEpUpload: typeof import('~icons/ep/upload')['default']
     IEpUploadFilled: typeof import('~icons/ep/upload-filled')['default']
     IEpUser: typeof import('~icons/ep/user')['default']
     Main: typeof import('./components/Main.vue')['default']
