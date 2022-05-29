@@ -51,19 +51,21 @@
 import { Delete, Edit } from '@element-plus/icons-vue'
 import { deleteUser, getUsers, updateUser } from "~/api/user"
 import { ElMessageBox } from "element-plus"
-
-// 获取用户信息
 const tableData = ref([])
-const fetchUsers = () => {
-  getUsers().then((res) => {
-    if (res.code != 200) {
-      return
-    }
-    tableData.value = res.data
-  })
+function useInfo() {
+  // 获取用户信息
+  const fetchUsers = () => {
+    getUsers().then((res) => {
+      if (res.code != 200) {
+        return
+      }
+      tableData.value = res.data
+    })
+  }
+  return { tableData, fetchUsers }
 }
+const { fetchUsers } = useInfo()
 fetchUsers()
-// 编辑
 const userDialog = ref(false)
 const userRole = ref('')
 const userInfo = reactive({
@@ -72,48 +74,51 @@ const userInfo = reactive({
   email: '',
   access: 0,
 })
-const editButton = (user: any) => {
-  userInfo.name = user.name;
-  userInfo.password = user.password;
-  userInfo.email = user.email
-  userRole.value = '用户'
-  userDialog.value = true;
-}
-const editSubmit = () => {
-  if (userRole.value == '用户') userInfo.access = 0
-  else userInfo.access = 1
-  updateUser(userInfo).then((res) => {
-    if (res.code != 200) {
-      return
-    }
-    ElMessage.success("修改成功")
-    userDialog.value = false
-    fetchUsers()
-  })
-}
-// 删除
-const deleteButton = (user: any) => {
-  ElMessageBox.confirm(
-    '确定删除此用户？',
-    '删除 ' + user.name,
-    {
-      confirmButtonText: '确认',
-      cancelButtonText: '取消',
-      type: 'warning',
-    }
-  )
-    .then(() => {
-      deleteUser(user.email).then((res) => {
-        if (res.code == 200)
-          ElMessage.success("删除成功")
-        else ElMessage.error("删除失败")
-        fetchUsers()
+function useControl() {
+  const editButton = (user: any) => {
+    userInfo.name = user.name;
+    userInfo.password = user.password;
+    userInfo.email = user.email
+    userRole.value = '用户'
+    userDialog.value = true;
+  }
+  const editSubmit = () => {
+    if (userRole.value == '用户') userInfo.access = 0
+    else userInfo.access = 1
+    updateUser(userInfo).then((res) => {
+      if (res.code != 200) {
+        return
+      }
+      ElMessage.success("修改成功")
+      userDialog.value = false
+      fetchUsers()
+    })
+  }
+  const deleteButton = (user: any) => {
+    ElMessageBox.confirm(
+      '确定删除此用户？',
+      '删除 ' + user.name,
+      {
+        confirmButtonText: '确认',
+        cancelButtonText: '取消',
+        type: 'warning',
+      }
+    )
+      .then(() => {
+        deleteUser(user.email).then((res) => {
+          if (res.code == 200)
+            ElMessage.success("删除成功")
+          else ElMessage.error("删除失败")
+          fetchUsers()
+        })
       })
-    })
-    .catch(() => {
-      ElMessage.info("删除撤销")
-    })
+      .catch(() => {
+        ElMessage.info("删除撤销")
+      })
+  }
+  return { editButton, editSubmit, deleteButton }
 }
+const { editButton, editSubmit, deleteButton } = useControl()
 </script>
 
 <style lang="scss">

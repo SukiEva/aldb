@@ -45,19 +45,28 @@ import error from "~/assets/error.png"
 import { getAnno, getData, searchAlga } from "~/api/algae"
 import { useRouter } from "vue-router"
 import { getUser } from "~/api/user"
-// 获取用户信息
+
 const router = useRouter()
-const userEmail = sessionStorage.getItem("UserEmail") as string
-if (userEmail == null) {
-  ElMessage.error("未登录")
-  router.push({ name: "Login" })
+// 获取用户信息
+function userInfo() {
+  const userEmail = sessionStorage.getItem("UserEmail") as string
+  if (userEmail == null) {
+    ElMessage.error("未登录")
+    router.push({ name: "Login" })
+  }
+  const userName = ref("用户")
+  const fetchUser = () => {
+    getUser(userEmail).then((res) => {
+      userName.value = res.data.name
+    })
+  }
+  return {
+    userEmail,
+    userName,
+    fetchUser
+  }
 }
-const userName = ref("用户")
-const fetchUser = () => {
-  getUser(userEmail).then((res) => {
-    userName.value = res.data.name
-  })
-}
+const { userEmail, userName, fetchUser } = userInfo()
 fetchUser()
 // 瀑布流图片设置
 function useWaterfall() {
@@ -105,8 +114,8 @@ function useWaterfall() {
   });
   return options;
 }
-
-// 预览
+const options = useWaterfall()
+// 预览图片
 function usePreview() {
   const previewVisible = ref(false)
   const previewData = reactive({
@@ -124,49 +133,65 @@ function usePreview() {
     handlePreview,
   }
 }
-
 const { previewVisible, previewData, handlePreview } = usePreview()
-
-const options = useWaterfall()
 // 数据获取
-const list = ref([])
-const fetchData = () => {
-  getData({}).then((res) => {
-    list.value = res.data;
-  });
-};
+function useData() {
+  const list = ref([])
+  const fetchData = () => {
+    getData({}).then((res) => {
+      list.value = res.data;
+    });
+  };
+  const search = (data: any) => {
+    if (data.key == "") {
+      fetchData()
+      return
+    }
+    if (data.type == "图像" || data.type == "") {
+      searchAlga(data.key).then((res) => {
+        list.value = res.data
+      })
+    }
+  }
+  return {
+    list,
+    fetchData,
+    search,
+  }
+}
+const { list, fetchData, search } = useData()
 fetchData()
-const search = (data: any) => {
-  if (data.key == "") {
-    fetchData()
-    return
+// 控制抽屉
+function useDrawer() {
+  // 抽屉打开
+  const alga = ref({})
+  const drawer = ref(false)
+  // 已有标注
+  const gridData = ref([])
+  const fetchAnno = (item: any) => {
+    getAnno(item.name).then((res) => {
+      gridData.value = res.data
+    });
+  };
+  const showDrawer = (item: any) => {
+    fetchAnno(item)
+    alga.value = item
+    drawer.value = true
+    console.log(gridData.value)
   }
-  if (data.type == "图像" || data.type == "") {
-    searchAlga(data.key).then((res) => {
-      list.value = res.data
-    })
+  // 抽屉关闭
+  const closeDrawer = (update: any) => {
+    drawer.value = false
+  }
+  return {
+    alga,
+    drawer,
+    gridData,
+    showDrawer,
+    closeDrawer
   }
 }
-// 抽屉打开
-const alga = ref({})
-const drawer = ref(false)
-// 已有标注
-const gridData = ref([])
-const fetchAnno = (item: any) => {
-  getAnno(item.name).then((res) => {
-    gridData.value = res.data
-  });
-};
-const showDrawer = (item: any) => {
-  fetchAnno(item)
-  alga.value = item
-  drawer.value = true
-  console.log(gridData.value)
-}
-// 抽屉关闭
-const closeDrawer = (update: any) => {
-  drawer.value = false
-}
+const { alga, drawer, gridData, showDrawer, closeDrawer } = useDrawer()
 </script>
 
 <style scoped>

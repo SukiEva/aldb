@@ -53,78 +53,91 @@ import { addAlga, addRiver, getRivers } from "~/api/algae"
 import type { UploadFile, UploadFiles, UploadProps } from 'element-plus'
 import { Plus, Upload } from '@element-plus/icons-vue'
 
-// 添加图像
-const dialogFormVisible = ref(false)
-const form = reactive({
-  name: "",
-  src: "",
-  river: "",
-});
-const clearForm = () => {
-  form.name = ""
-  form.src = ""
-  form.river = ""
-};
-const formCancel = () => {
-  dialogFormVisible.value = false
-  clearForm();
-};
-const formSubmit = () => {
-  addAlga(form).then((res) => {
-    if (res.code != 200) {
-      ElMessage.error("上传失败")
-      return
-    }
-    ElMessage.success("上传成功")
-    formCancel()
-    location.reload()
-  })
-}
-// 上传图片
-const disabled = ref(false)
-const uploadUrl = import.meta.env.VITE_APP_BASE_API + "/upload"
-const afterUpload: UploadProps['onSuccess'] = (response: any, uploadFile: UploadFile, uploadFiles: UploadFiles) => {
-  if (response.code != 200) {
-    ElMessage.error("上传失败")
-    return
-  }
-  form.src = response.data.url
-}
-// 获取河流
 const rivers = ref([])
-const fetchRivers = () => {
-  getRivers({}).then((res) => {
-    rivers.value = res.data;
-  });
-};
-fetchRivers();
-// 添加河流
 const river = reactive({
   name: "",
   address: "",
 });
 const riverFormVisible = ref(false)
-const riverFormSubmit = () => {
-  if (river.name == "" || river.address == "") {
-    ElMessage.warning("请填写完整信息")
-    return;
-  }
-  addRiver(river).then((res) => {
-    console.log(res)
-    if (res.code != 200) {
+function useRiverForm() {
+  // 获取河流
+
+  const fetchRivers = () => {
+    getRivers({}).then((res) => {
+      rivers.value = res.data;
+    });
+  };
+  fetchRivers();
+  // 添加河流
+  const riverFormSubmit = () => {
+    if (river.name == "" || river.address == "") {
+      ElMessage.warning("请填写完整信息")
       return;
     }
+    addRiver(river).then((res) => {
+      console.log(res)
+      if (res.code != 200) {
+        return;
+      }
 
-    ElMessage.success("添加河流成功")
-    fetchRivers();
+      ElMessage.success("添加河流成功")
+      fetchRivers();
+      riverFormVisible.value = false
+    });
+  };
+  const riverFormCancel = () => {
+    river.name = ""
+    river.address = ""
     riverFormVisible.value = false
-  });
-};
-const riverFormCancel = () => {
-  river.name = ""
-  river.address = ""
-  riverFormVisible.value = false
-};
+  };
+  return {
+    riverFormSubmit,
+    riverFormCancel
+  }
+}
+const { riverFormSubmit, riverFormCancel } = useRiverForm()
+const dialogFormVisible = ref(false)
+const form = reactive({
+  name: "",
+  src: "",
+  river: "",
+})
+const clearForm = () => {
+  form.name = ""
+  form.src = ""
+  form.river = ""
+}
+function useUpload() {
+  const formCancel = () => {
+    dialogFormVisible.value = false
+    clearForm();
+  }
+  const formSubmit = () => {
+    addAlga(form).then((res) => {
+      if (res.code != 200) {
+        ElMessage.error("上传失败")
+        return
+      }
+      ElMessage.success("上传成功")
+      formCancel()
+      location.reload()
+    })
+  }
+  // 上传图片
+  const uploadUrl = import.meta.env.VITE_APP_BASE_API + "/upload"
+  const afterUpload: UploadProps['onSuccess'] = (response: any, uploadFile: UploadFile, uploadFiles: UploadFiles) => {
+    if (response.code != 200) {
+      ElMessage.error("上传失败")
+      return
+    }
+    form.src = response.data.url
+  }
+
+  return {
+    formCancel, formSubmit, uploadUrl, afterUpload
+  }
+}
+const { formCancel, formSubmit, uploadUrl, afterUpload } = useUpload()
 </script>
 
 <style scoped>

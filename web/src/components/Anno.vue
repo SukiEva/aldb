@@ -56,15 +56,8 @@ import { UploadFile, UploadFiles, UploadProps } from "element-plus/es"
 import { deleteAnno } from "~/api/algae"
 
 const props = defineProps(['userEmail'])
-// 获取个人标注
+
 const tableData = ref([])
-const fetchAnno = () => {
-  getAnno(props.userEmail).then((res) => {
-    tableData.value = res.data
-  })
-}
-fetchAnno()
-// 编辑
 const formats = ref(['XML', 'COCO', 'VOC', 'CSV', 'JSON'])
 const annoDialog = ref(false)
 const annoInfo = reactive({
@@ -73,52 +66,71 @@ const annoInfo = reactive({
   url: '',
   id: '',
 })
-const editButton = (anno: any) => {
-  annoInfo.description = anno.description
-  annoInfo.format = anno.format
-  annoInfo.url = anno.url
-  annoInfo.id = anno.id
-  annoDialog.value = true
-}
-const editSubmit = () => {
-
-}
-// 删除
-const deleteButton = (obj: any) => {
-  ElMessageBox.confirm(
-    '确定删除此标注？',
-    '删除 ' + obj.id.toString(),
-    {
-      confirmButtonText: '确认',
-      cancelButtonText: '取消',
-      type: 'warning',
-    }
-  )
-    .then(() => {
-      deleteAnno(annoInfo.id).then((res) => {
-        if (res.code == 200)
-          ElMessage.success("删除成功")
-        else ElMessage.error("删除失败")
-        fetchAnno()
-      })
+function useAnnoForm() {
+  // 获取个人标注
+  const fetchAnno = () => {
+    getAnno(props.userEmail).then((res) => {
+      tableData.value = res.data
     })
-    .catch(() => {
-      ElMessage.info("删除撤销")
-    })
-}
-// 下载标注
-const download = (row: any) => {
-  window.open(row)
-}
-// 上传文件
-const uploadUrl = import.meta.env.VITE_APP_BASE_API + "/upload"
-const afterUpload: UploadProps['onSuccess'] = (response: any, uploadFile: UploadFile, uploadFiles: UploadFiles) => {
-  if (response.code != 200) {
-    ElMessage.error("上传失败")
-    return
   }
-  annoInfo.url = response.data.url
+  fetchAnno()
+  // 编辑
+  const editButton = (anno: any) => {
+    annoInfo.description = anno.description
+    annoInfo.format = anno.format
+    annoInfo.url = anno.url
+    annoInfo.id = anno.id
+    annoDialog.value = true
+  }
+  const editSubmit = () => {
+    // todo
+  }
+  // 删除
+  const deleteButton = (obj: any) => {
+    ElMessageBox.confirm(
+      '确定删除此标注？',
+      '删除 ' + obj.id.toString(),
+      {
+        confirmButtonText: '确认',
+        cancelButtonText: '取消',
+        type: 'warning',
+      }
+    )
+      .then(() => {
+        deleteAnno(annoInfo.id).then((res) => {
+          if (res.code == 200)
+            ElMessage.success("删除成功")
+          else ElMessage.error("删除失败")
+          fetchAnno()
+        })
+      })
+      .catch(() => {
+        ElMessage.info("删除撤销")
+      })
+  }
+  // 下载标注
+  const download = (row: any) => {
+    window.open(row)
+  }
+  // 上传文件
+  const uploadUrl = import.meta.env.VITE_APP_BASE_API + "/upload"
+  const afterUpload: UploadProps['onSuccess'] = (response: any, uploadFile: UploadFile, uploadFiles: UploadFiles) => {
+    if (response.code != 200) {
+      ElMessage.error("上传失败")
+      return
+    }
+    annoInfo.url = response.data.url
+  }
+  return {
+    editButton,
+    editSubmit,
+    deleteButton,
+    download,
+    uploadUrl,
+    afterUpload
+  }
 }
+const { editButton, editSubmit, deleteButton, download, uploadUrl, afterUpload } = useAnnoForm()
 </script>
 
 <style scoped>

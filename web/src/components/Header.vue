@@ -47,6 +47,7 @@ import { searchAlga } from "~/api/algae";
 const router = useRouter()
 const props = defineProps(['userName', 'display'])
 const emit = defineEmits(['search'])
+
 const handleCommand = (command: string | number | object) => {
   if (command == "out") {
     sessionStorage.clear()

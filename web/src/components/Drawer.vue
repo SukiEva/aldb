@@ -51,55 +51,69 @@ import { UploadFile, UploadFiles, UploadProps } from "element-plus/es"
 
 const props = defineProps(['alga', 'drawer', 'user', 'gridData'])
 const emit = defineEmits(['update'])
-// 下载标注
-const download = (row: any) => {
-  window.open(row)
-}
-// 添加标注
-const formats = ref(['XML', 'COCO', 'VOC', 'CSV', 'JSON'])
-const form = reactive({
-  user: props.user,
-  alga: props.alga.name,
-  description: '',
-  format: '',
-  url: '',
-})
-const submitForm = () => {
-  form.alga = props.alga.name
-  form.user = props.user
-  if (form.user == "" || form.alga == "" || form.description == "" || form.format == "" || form.url == "") {
-    ElMessage.warning("请补充完整信息")
-    return
+
+function useForm() {
+  // 下载标注
+  const download = (row: any) => {
+    window.open(row)
   }
-  addAnno(form).then((res) => {
-    if (res.code != 200) {
+  // 添加标注
+  const formats = ref(['XML', 'COCO', 'VOC', 'CSV', 'JSON'])
+  const form = reactive({
+    user: props.user,
+    alga: props.alga.name,
+    description: '',
+    format: '',
+    url: '',
+  })
+  const submitForm = () => {
+    form.alga = props.alga.name
+    form.user = props.user
+    if (form.user == "" || form.alga == "" || form.description == "" || form.format == "" || form.url == "") {
+      ElMessage.warning("请补充完整信息")
       return
     }
-    ElMessage.success("添加成功")
-    cancelForm()
-    location.reload()
-  })
-}
-const cancelForm = () => {
-  form.description = ""
-  form.format = ""
-  form.url = ""
-  emit('update', false)
-}
-// 上传文件
-const uploadUrl = import.meta.env.VITE_APP_BASE_API + "/upload"
-const afterUpload: UploadProps['onSuccess'] = (response: any, uploadFile: UploadFile, uploadFiles: UploadFiles) => {
-  if (response.code != 200) {
-    ElMessage.error("上传失败")
-    return
+    addAnno(form).then((res) => {
+      if (res.code != 200) {
+        return
+      }
+      ElMessage.success("添加成功")
+      cancelForm()
+      location.reload()
+    })
   }
-  form.url = response.data.url
+  const cancelForm = () => {
+    form.description = ""
+    form.format = ""
+    form.url = ""
+    emit('update', false)
+  }
+  // 上传文件
+  const uploadUrl = import.meta.env.VITE_APP_BASE_API + "/upload"
+  const afterUpload: UploadProps['onSuccess'] = (response: any, uploadFile: UploadFile, uploadFiles: UploadFiles) => {
+    if (response.code != 200) {
+      ElMessage.error("上传失败")
+      return
+    }
+    form.url = response.data.url
+  }
+  // 关闭回调
+  const handleClose = (done: any) => {
+    cancelForm()
+    done()
+  }
+  return {
+    download,
+    formats,
+    form,
+    submitForm,
+    cancelForm,
+    uploadUrl,
+    afterUpload,
+    handleClose
+  }
 }
-// 关闭回调
-const handleClose = (done: any) => {
-  cancelForm()
-  done()
-}
+const { download, formats, form, submitForm, cancelForm, uploadUrl, afterUpload, handleClose } = useForm()
 </script>
 
 <style scoped>
