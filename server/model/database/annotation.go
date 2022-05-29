@@ -13,10 +13,10 @@ type Annotation struct {
 	Url                string `json:"url" bson:"url"`
 }
 
-func (m *Mgo) QueryAnnotationById(obj primitive.ObjectID) Annotation {
-	var one Annotation
+func (m *Mgo) QueryAnnotationById(obj primitive.ObjectID) *Annotation {
+	var one *Annotation
 	if err := annotation.Find(ctx, bson.M{"_id": obj}).One(&one); err != nil {
-		return Annotation{}
+		return nil
 	}
 	return one
 }

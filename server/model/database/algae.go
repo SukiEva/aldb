@@ -20,10 +20,18 @@ func (m *Mgo) QueryAlgae() ([]*Alga, error) {
 	return batch, err
 }
 
+// QueryAlgaByName 通过名称查找
 func (m *Mgo) QueryAlgaByName(name string) (*Alga, error) {
 	var one *Alga
 	err := algae.Find(ctx, bson.M{"name": name}).One(&one)
 	return one, err
+}
+
+// QueryAlgaByKey 正则查找
+func (m *Mgo) QueryAlgaByKey(key string) ([]*Alga, error) {
+	var batch []*Alga
+	err := algae.Find(ctx, bson.M{"name": bson.M{"$regex": key}}).All(&batch)
+	return batch, err
 }
 
 func (m *Mgo) InsertAlga(obj *Alga) (interface{}, error) {

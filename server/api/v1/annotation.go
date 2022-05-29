@@ -65,12 +65,16 @@ func AddAnnotation(c *gin.Context) {
 	if err != nil {
 		code = e.CODE.AnnoBindError
 	} else {
+		// 添加藻类标注到数据库
 		res, err := model.AddAnnotation(anno)
+		// 从结果中断言生成的唯一 id
 		id := res.(primitive.ObjectID)
 		if err != nil {
 			code = e.CODE.DataBaseError
 		} else {
+			// 绑定到藻类图像
 			err1 := model.BindToAlga(anno.Alga, id)
+			// 绑定到用户
 			err2 := model.BindToUser(anno.User, id)
 			if err1 != nil || err2 != nil {
 				code = e.CODE.DataBindError

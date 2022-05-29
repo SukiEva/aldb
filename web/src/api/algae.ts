@@ -16,6 +16,13 @@ export const addAlga = (data: object) => {
     });
 };
 
+export const searchAlga = (query: string) => {
+    return http.request({
+        url: "/api/alga/search?k=" + query,
+        method: "get",
+    });
+};
+
 export const getAnno = (query: string) => {
     return http.request({
         url: "/api/alga/anno?alga=" + query,
@@ -37,6 +44,7 @@ export const deleteAnno = (query: string) => {
         method: "get",
     });
 };
+
 
 
 export const addRiver = (data: object) => {

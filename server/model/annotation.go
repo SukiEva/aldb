@@ -7,12 +7,21 @@ import (
 
 func GetAnnotationByAlga(algaName string) []Annotation {
 	res := make([]Annotation, 0)
+	// 根据藻类名称查找对应藻类
 	alga, err := mgo.QueryAlgaByName(algaName)
 	if err != nil {
 		return res
 	}
-	for _, obj := range alga.Annotations {
+	for index, obj := range alga.Annotations {
+		// 查找对应标注
 		anno := mgo.QueryAnnotationById(obj)
+		if anno == nil { // 标注不存在
+			// 标注列表删除该标注
+			alga.Annotations = append(alga.Annotations[:index], alga.Annotations[index:]...)
+			// 更新藻类数据
+			_ = mgo.UpdateAlga(alga.Id, alga.Annotations)
+			continue
+		}
 		res = append(res, Annotation{
 			Description: anno.Description,
 			Format:      anno.Format,
@@ -52,21 +61,26 @@ func AddAnnotation(obj Anno) (interface{}, error) {
 	})
 }
 
+// BindToAlga 根据藻类名称绑定对应藻类图像
 func BindToAlga(algaName string, id primitive.ObjectID) error {
+	// 通过藻类名称查找对应的藻类
 	alga, err := mgo.QueryAlgaByName(algaName)
 	if err != nil {
 		return err
 	}
+	// 添加到藻类的标注列表
 	var anno []primitive.ObjectID
 	if alga.Annotations == nil {
 		anno = []primitive.ObjectID{id}
 	} else {
 		anno = append(alga.Annotations, id)
 	}
+	// 更新藻类数据
 	err = mgo.UpdateAlga(alga.Id, anno)
 	return err
 }
 
+// BindToUser 根据用户邮箱绑定对应用户
 func BindToUser(userEmail string, id primitive.ObjectID) error {
 	user, err := mgo.QueryOperatorByEmail(userEmail)
 	if err != nil {

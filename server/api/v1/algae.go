@@ -103,3 +103,22 @@ func GetRivers(c *gin.Context) {
 		"data": res,
 	})
 }
+
+// SearchAlga
+// @Summary SearchAlga
+// @Description 搜索藻类图像
+// @Tags aldb
+// @Accept json
+// @Produce json
+// @Success 200 {object} object "{code, msg, data}"
+// @Router /alga/search [get]
+func SearchAlga(c *gin.Context) {
+	code := e.CODE.Success
+	key := c.Query("k")
+	res := model.SearchAlga(key)
+	c.JSON(http.StatusOK, gin.H{
+		"code": code,
+		"msg":  e.ParseCode(code),
+		"data": res,
+	})
+}

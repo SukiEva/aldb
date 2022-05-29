@@ -27,6 +27,7 @@ func InitRouter() *gin.Engine {
 		algae := api.Group("alga")
 		{
 			algae.GET("anno", v1.GetAnnotationByAlga)
+			algae.GET("search", v1.SearchAlga)
 			algae.POST("add", v1.AddAlga)
 		}
 		anno := api.Group("anno")

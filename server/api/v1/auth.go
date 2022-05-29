@@ -29,14 +29,16 @@ func GetAuth(c *gin.Context) {
 		})
 		return
 	}
-
+	// 判断验证码是否正确
 	ok := captcha.Verify(a.CaptchaId, a.CaptchaValue)
-
+	// 判断账号密码是否正确
 	if ok && model.CheckAuth(a.Email, a.Password) {
+		// 生成令牌 token
 		token, err := jwt.GenToken(a.Email, a.Password)
 		if err != nil {
 			code = e.CODE.AuthTokenError
 		} else {
+			// token 返回
 			data["token"] = token
 		}
 	} else if !ok {

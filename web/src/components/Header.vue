@@ -5,7 +5,7 @@
     </router-link>
 
     <div v-if="display" class="input">
-      <el-input v-model="search" placeholder="请输入..." size="large" clearable>
+      <el-input v-model="search" placeholder="请输入..." size="large" clearable @change="searchData">
         <template #prepend>
           <el-select v-model="select" placeholder="类型" style="width: 80px">
             <el-option label="图像" value="图像" />
@@ -13,7 +13,7 @@
           </el-select>
         </template>
         <template #append>
-          <el-button :icon="Search" />
+          <el-button :icon="Search" @click="searchData" />
         </template>
       </el-input>
     </div>
@@ -43,9 +43,10 @@
 <script lang="ts" setup>
 import { useRouter } from "vue-router"
 import { Search } from '@element-plus/icons-vue'
+import { searchAlga } from "~/api/algae";
 const router = useRouter()
-const props = defineProps(['userName','display'])
-
+const props = defineProps(['userName', 'display'])
+const emit = defineEmits(['search'])
 const handleCommand = (command: string | number | object) => {
   if (command == "out") {
     sessionStorage.clear()
@@ -57,6 +58,10 @@ const handleCommand = (command: string | number | object) => {
 
 const search = ref('')
 const select = ref('')
+
+const searchData = () => {
+  emit('search', { key: search.value, type: select.value })
+}
 </script>
 
 <style scoped>
@@ -103,5 +108,4 @@ const select = ref('')
   /* color: #fff; */
   cursor: pointer;
 }
-
 </style>

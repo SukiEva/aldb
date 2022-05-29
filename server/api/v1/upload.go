@@ -10,16 +10,19 @@ import (
 func Upload(c *gin.Context) {
 	code := e.CODE.Success
 	data := make(map[string]interface{})
+	// 获取请求中的 multipart 头部
 	_, header, err := c.Request.FormFile("file")
 	if err != nil {
 		code = e.CODE.FileReceiveError
 	} else {
 		var fileUrl, fileName string
 		cos := upload.NewCos()
+		// 调用基于腾讯云官方 SDK 封装的上传方法
 		fileUrl, fileName, err = cos.UploadFile(header)
 		if err != nil {
 			code = e.CODE.FileUploadError
 		} else {
+			// 返回文件名和文件链接
 			data["name"] = fileName
 			data["url"] = fileUrl
 		}

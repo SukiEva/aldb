@@ -69,3 +69,37 @@ func GetRivers() []River {
 	}
 	return res
 }
+
+func SearchAlga(key string) []Alga {
+	res := make([]Alga, 0)
+	mp := make(map[string]struct{})
+	// 精确查找
+	if alga, err := mgo.QueryAlgaByName(key); err == nil {
+		// 只有找到后才会执行
+		river := mgo.QueryRiverById(alga.River)
+		mp[alga.Name] = struct{}{}
+		res = append(res, Alga{
+			Name:  alga.Name,
+			Src:   alga.Src,
+			River: river.Name,
+		})
+	}
+	// 模糊查找
+	if algae, err := mgo.QueryAlgaByKey(key); err == nil {
+		for _, alga := range algae {
+			// 去重复
+			if _, ok := mp[alga.Name]; ok {
+				continue
+			}
+			mp[alga.Name] = struct{}{}
+			// 只有找到后才会执行
+			river := mgo.QueryRiverById(alga.River)
+			res = append(res, Alga{
+				Name:  alga.Name,
+				Src:   alga.Src,
+				River: river.Name,
+			})
+		}
+	}
+	return res
+}
