@@ -16,4 +16,5 @@
 # vendor/
 .idea
 bin
+config.json
 app.log

@@ -29,8 +29,8 @@
       </Waterfall>
       <Drawer :alga="alga" :drawer="drawer" :user="userEmail" :grid-data="gridData" @update="closeDrawer" />
       <!-- 大图预览 -->
-      <el-dialog v-model="previewVisible" :title="previewData.title" width="500px" center draggable>
-        <img style="width:100%" :src="previewData.url" />
+      <el-dialog v-model="previewVisible" :title="previewData.title" width="500px" center>
+        <el-image style="width:100%" :src="previewData.url" />
       </el-dialog>
     </div>
     <el-backtop />

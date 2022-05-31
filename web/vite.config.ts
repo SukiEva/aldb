@@ -19,8 +19,10 @@ export default defineConfig({
     css: {
         preprocessorOptions: {
             scss: {
+                charset: false,
                 additionalData: `@use "~/styles/element/index.scss" as *;`,
             },
+            css: { charset: false }
         },
     },
     plugins: [
@@ -59,4 +61,5 @@ export default defineConfig({
             autoInstall: true,
         }),
     ],
+    
 });

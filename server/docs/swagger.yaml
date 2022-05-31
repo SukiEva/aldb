@@ -44,6 +44,21 @@ paths:
       summary: GetAnnotationByAlga
       tags:
       - aldb
+  /alga/search:
+    get:
+      consumes:
+      - application/json
+      description: 搜索藻类图像
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{code, msg, data}'
+          schema:
+            type: object
+      summary: SearchAlga
+      tags:
+      - aldb
   /anno/add:
     post:
       consumes:

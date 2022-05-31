@@ -39,7 +39,7 @@ var Conf = new(Config)
 
 // InitConfig 初始化配置；从指定文件加载配置文件
 func InitConfig() error {
-	b, err := ioutil.ReadFile("server/config/config.json")
+	b, err := ioutil.ReadFile("./config.json")
 	if err != nil {
 		return err
 	}

@@ -75,6 +75,29 @@ const docTemplate = `{
                 }
             }
         },
+        "/alga/search": {
+            "get": {
+                "description": "搜索藻类图像",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "aldb"
+                ],
+                "summary": "SearchAlga",
+                "responses": {
+                    "200": {
+                        "description": "{code, msg, data}",
+                        "schema": {
+                            "type": "object"
+                        }
+                    }
+                }
+            }
+        },
         "/anno/add": {
             "post": {
                 "description": "添加标注",
