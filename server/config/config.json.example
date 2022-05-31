@@ -1,0 +1,22 @@
+{
+  "port": 8080,
+  "mongo": {
+    "uri": "mongodb://localhost:27017",
+    "db": "aldb"
+  },
+  "cos": {
+    "bucket": "share-1303870432",
+    "region": "ap-nanjing",
+    "secretID": "AKIDxjESP6WfXHkupSqwlIZZIjuoQlpdARRB",
+    "secretKey": "VjgNnwoQmsiHbeRxDCtJSKvGK8etrYyc",
+    "baseURL": "https://share-1303870432.cos.ap-nanjing.myqcloud.com",
+    "pathPrefix": "aldb"
+  },
+  "log": {
+    "level": "info",
+    "filename": "app.log",
+    "maxsize": 200,
+    "max_age": 7,
+    "max_backups": 10
+  }
+}
