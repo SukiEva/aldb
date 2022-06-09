@@ -2,9 +2,7 @@
 
 *MongoDB-Based Annotated Image Data Storage System*
 
-## Setup server
-
-[server](https://github.com/SukiEva/aldb/tree/master/server)
+## Setup
 
 ### Download
 
@@ -31,12 +29,17 @@ swag init
 
 API Docs will automatically generated at `/swagger/index.html`
 
-## Web
+## Deployment
+
+[deployment](https://github.com/SukiEva/aldb/tree/master/deployment)
+
+## Compile 
+
+### server
+
+[server](https://github.com/SukiEva/aldb/tree/master/server)
+
+### Web
 
 [web](https://github.com/SukiEva/aldb/tree/master/web)
 
-Unzip `dist.zip`
-
-## Docker
-
-[deployment](https://github.com/SukiEva/aldb/tree/master/deployment)
