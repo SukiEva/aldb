@@ -53,6 +53,8 @@ import { addAlga, addRiver, getRivers } from "~/api/algae"
 import type { UploadFile, UploadFiles, UploadProps } from 'element-plus'
 import { Plus, Upload } from '@element-plus/icons-vue'
 
+const emit = defineEmits(['refresh'])
+
 const rivers = ref([])
 const river = reactive({
   name: "",
@@ -120,7 +122,7 @@ function useUpload() {
       }
       ElMessage.success("上传成功")
       formCancel()
-      location.reload()
+      emit('refresh',true)
     })
   }
   // 上传图片

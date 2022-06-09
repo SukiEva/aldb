@@ -40,12 +40,18 @@ export const addAnno = (data: object) => {
 
 export const deleteAnno = (query: string) => {
     return http.request({
-        url: "/api/alga/anno?id=" + query,
+        url: "/api/anno/delete?id=" + query,
         method: "get",
     });
 };
 
-
+export const updateAnno = (data: object) => {
+    return http.request({
+        url: "/api/anno/update",
+        method: "post",
+        data,
+    });
+};
 
 export const addRiver = (data: object) => {
     return http.request({

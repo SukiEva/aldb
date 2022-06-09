@@ -39,15 +39,21 @@ func GetAnnotationByUser(userEmail string) []Annotation {
 	if err != nil {
 		return res
 	}
-	for _, obj := range user.Annotations {
+	for index, obj := range user.Annotations {
 		anno := mgo.QueryAnnotationById(obj)
+		if anno == nil { // 标注不存在
+			// 标注列表删除该标注
+			user.Annotations = append(user.Annotations[:index], user.Annotations[index:]...)
+			_ = mgo.UpdateOperator(user.Id, user.Annotations)
+			continue
+		}
 		res = append(res, Annotation{
 			Description: anno.Description,
 			Format:      anno.Format,
 			Url:         anno.Url,
 			CreateAt:    anno.CreateAt.Format("2006-01-02 15:04"),
 			UpdateAt:    anno.UpdateAt.Format("2006-01-02 15:04"),
-			Id:          anno.Id.String(),
+			Id:          anno.Id.Hex(),
 		})
 	}
 	return res
@@ -59,6 +65,14 @@ func AddAnnotation(obj Anno) (interface{}, error) {
 		Format:      obj.Format,
 		Url:         obj.Url,
 	})
+}
+
+func DeleteAnnotation(id string) error {
+	return mgo.DropAnnotation(id)
+}
+
+func UpdateAnnotation(obj Annotation) error {
+	return mgo.UpsertAnnotation(obj.Description, obj.Format, obj.Url, obj.Id)
 }
 
 // BindToAlga 根据藻类名称绑定对应藻类图像

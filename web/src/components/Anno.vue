@@ -53,7 +53,7 @@ import { Delete, Download, Edit } from '@element-plus/icons-vue'
 import { getAnno } from "~/api/user"
 import { ElMessageBox } from "element-plus"
 import { UploadFile, UploadFiles, UploadProps } from "element-plus/es"
-import { deleteAnno } from "~/api/algae"
+import { deleteAnno, updateAnno } from "~/api/algae"
 
 const props = defineProps(['userEmail'])
 
@@ -83,13 +83,20 @@ function useAnnoForm() {
     annoDialog.value = true
   }
   const editSubmit = () => {
-    // todo
+    updateAnno(annoInfo).then((res) => {
+      if (res.code != 200) {
+        return
+      }
+      ElMessage.success("修改成功")
+      annoDialog.value = false
+      fetchAnno()
+    })
   }
   // 删除
   const deleteButton = (obj: any) => {
     ElMessageBox.confirm(
       '确定删除此标注？',
-      '删除 ' + obj.id.toString(),
+      '删除 ' + obj.id,
       {
         confirmButtonText: '确认',
         cancelButtonText: '取消',
@@ -97,7 +104,7 @@ function useAnnoForm() {
       }
     )
       .then(() => {
-        deleteAnno(annoInfo.id).then((res) => {
+        deleteAnno(obj.id).then((res) => {
           if (res.code == 200)
             ElMessage.success("删除成功")
           else ElMessage.error("删除失败")
@@ -119,6 +126,7 @@ function useAnnoForm() {
       ElMessage.error("上传失败")
       return
     }
+    ElMessage.success("上传成功")
     annoInfo.url = response.data.url
   }
   return {

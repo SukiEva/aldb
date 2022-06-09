@@ -113,6 +113,52 @@
                 }
             }
         },
+        "/anno/delete": {
+            "get": {
+                "description": "删除标注",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "aldb"
+                ],
+                "summary": "DeleteAnnotation",
+                "responses": {
+                    "200": {
+                        "description": "{code, msg, data}",
+                        "schema": {
+                            "type": "object"
+                        }
+                    }
+                }
+            }
+        },
+        "/anno/update": {
+            "post": {
+                "description": "修改标注信息",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "aldb"
+                ],
+                "summary": "UpdateAnnotation",
+                "responses": {
+                    "200": {
+                        "description": "{code, msg, data}",
+                        "schema": {
+                            "type": "object"
+                        }
+                    }
+                }
+            }
+        },
         "/data": {
             "get": {
                 "description": "获取所有藻类数据",

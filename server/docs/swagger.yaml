@@ -74,6 +74,36 @@ paths:
       summary: AddAnnotation
       tags:
       - aldb
+  /anno/delete:
+    get:
+      consumes:
+      - application/json
+      description: 删除标注
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{code, msg, data}'
+          schema:
+            type: object
+      summary: DeleteAnnotation
+      tags:
+      - aldb
+  /anno/update:
+    post:
+      consumes:
+      - application/json
+      description: 修改标注信息
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{code, msg, data}'
+          schema:
+            type: object
+      summary: UpdateAnnotation
+      tags:
+      - aldb
   /data:
     get:
       consumes:

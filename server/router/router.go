@@ -32,7 +32,9 @@ func InitRouter() *gin.Engine {
 		}
 		anno := api.Group("anno")
 		{
+			anno.GET("delete", v1.DeleteAnnotation)
 			anno.POST("add", v1.AddAnnotation)
+			anno.POST("update", v1.UpdateAnnotation)
 		}
 		user := api.Group("user")
 		{

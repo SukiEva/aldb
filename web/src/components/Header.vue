@@ -21,7 +21,7 @@
 
     <div class="header-right">
       <div class="header-user-con">
-        <Upload />
+        <Upload @refresh="refreshData" />
         <el-dropdown class="user-name" trigger="click" @command="handleCommand">
           <span class="el-dropdown-link">
             <el-avatar> {{ userName }} </el-avatar>
@@ -46,7 +46,7 @@ import { Search } from '@element-plus/icons-vue'
 import { searchAlga } from "~/api/algae";
 const router = useRouter()
 const props = defineProps(['userName', 'display'])
-const emit = defineEmits(['search'])
+const emit = defineEmits(['search', 'refresh'])
 
 const handleCommand = (command: string | number | object) => {
   if (command == "out") {
@@ -58,10 +58,13 @@ const handleCommand = (command: string | number | object) => {
 }
 
 const search = ref('')
-const select = ref('')
+const select = ref('图像')
 
 const searchData = () => {
   emit('search', { key: search.value, type: select.value })
+}
+const refreshData = (data: any) => {
+  emit('refresh', data)
 }
 </script>
 

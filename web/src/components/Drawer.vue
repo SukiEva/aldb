@@ -1,6 +1,6 @@
 <template>
   <el-drawer :model-value="drawer" :title="alga.name" size="50%" :before-close="handleClose" destroy-on-close>
-    <el-table :data="gridData">
+    <el-table :data="gridData" height="250">
       <el-table-column property="createAt" label="创建时间" />
       <el-table-column property="updateAt" label="修改时间" />
       <el-table-column property="description" label="描述" />

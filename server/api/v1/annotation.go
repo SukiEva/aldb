@@ -87,3 +87,51 @@ func AddAnnotation(c *gin.Context) {
 		"data": data,
 	})
 }
+
+// DeleteAnnotation
+// @Summary DeleteAnnotation
+// @Description 删除标注
+// @Tags aldb
+// @Accept json
+// @Produce json
+// @Success 200 {object} object "{code, msg, data}"
+// @Router /anno/delete [get]
+func DeleteAnnotation(c *gin.Context) {
+	code := e.CODE.Success
+	data := make(map[string]interface{})
+	id := c.Query("id")
+	if err := model.DeleteAnnotation(id); err != nil {
+		code = e.CODE.DataBaseError
+	}
+	c.JSON(http.StatusOK, gin.H{
+		"code": code,
+		"msg":  e.ParseCode(code),
+		"data": data,
+	})
+}
+
+// UpdateAnnotation
+// @Summary UpdateAnnotation
+// @Description 修改标注信息
+// @Tags aldb
+// @Accept json
+// @Produce json
+// @Success 200 {object} object "{code, msg, data}"
+// @Router /anno/update [post]
+func UpdateAnnotation(c *gin.Context) {
+	code := e.CODE.Success
+	data := make(map[string]interface{})
+
+	var anno model.Annotation
+	err := c.ShouldBindJSON(&anno)
+	if err != nil {
+		code = e.CODE.AnnoBindError
+	} else if err := model.UpdateAnnotation(anno); err != nil {
+		code = e.CODE.DataBaseError
+	}
+	c.JSON(http.StatusOK, gin.H{
+		"code": code,
+		"msg":  e.ParseCode(code),
+		"data": data,
+	})
+}

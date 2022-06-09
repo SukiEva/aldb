@@ -21,12 +21,23 @@ func (m *Mgo) QueryAnnotationById(obj primitive.ObjectID) *Annotation {
 	return one
 }
 
-func (m *Mgo) UpsertAnnotation(obj *Annotation) error {
-	_, err := annotation.Upsert(ctx, bson.M{"_id": obj.Id}, obj)
-	return err
-}
-
 func (m *Mgo) InsertAnnotation(obj *Annotation) (interface{}, error) {
 	res, err := annotation.InsertOne(ctx, obj)
 	return res.InsertedID, err
+}
+
+func (m *Mgo) DropAnnotation(id string) error {
+	oid, err := primitive.ObjectIDFromHex(id)
+	if err != nil {
+		return err
+	}
+	return annotation.Remove(ctx, bson.M{"_id": oid})
+}
+
+func (m *Mgo) UpsertAnnotation(description, format, url string, id string) error {
+	oid, err := primitive.ObjectIDFromHex(id)
+	if err != nil {
+		return err
+	}
+	return annotation.UpdateOne(ctx, bson.M{"_id": oid}, bson.M{"$set": bson.M{"description": description, "format": format, "url": url}})
 }

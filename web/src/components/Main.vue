@@ -1,5 +1,5 @@
 <template>
-  <Header :user-name="userName" :display="true" @search="search" />
+  <Header :user-name="userName" :display="true" @search="search" @refresh="fetchData"/>
   <el-main>
     <div class="flex-auto overflow-y-auto">
       <Waterfall :list="list" :row-key="options.rowKey" :gutter="options.gutter"
@@ -33,6 +33,7 @@
         <el-image style="width:100%" :src="previewData.url" />
       </el-dialog>
     </div>
+
     <el-backtop />
   </el-main>
 </template>
@@ -139,9 +140,9 @@ function useData() {
   const list = ref([])
   const fetchData = () => {
     getData({}).then((res) => {
-      list.value = res.data;
-    });
-  };
+      list.value = res.data
+    })
+  }
   const search = (data: any) => {
     if (data.key == "") {
       fetchData()
